@@ -59,7 +59,7 @@ public class StudentService {
     public Boolean registerStudent(Students student) throws SQLException {
         List<Students> existingStudents = studentDao.getAllStudents();
         for (Students students : existingStudents) {
-            if (students.getEmail() == student.getEmail()) {
+            if (students.getEmail().equals(student.getEmail())) {
                 throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
             }
         }
@@ -88,8 +88,8 @@ public class StudentService {
 
     public boolean updateStudent(Students student) throws SQLException {
         List<Students> existingStudents = getAllStudent();
-        for (Students u : existingStudents) {
-            if (u.getEmail().equals(student.getEmail())) {
+        for (Students s : existingStudents) {
+            if (s.getEmail().equals(student.getEmail())) {
                 throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
             }
         }
