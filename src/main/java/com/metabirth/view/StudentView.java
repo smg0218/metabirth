@@ -25,11 +25,12 @@ public class StudentView {
         while (true) {
             System.out.println("\n===== 학생 관리 시스템 =====");
             System.out.println("1. 전체 학생 조회");
-            System.out.println("2. 삭제 학생 조회");
-            System.out.println("3. 학생 등록");
-            System.out.println("4. 학생 조회 (ID)");
-            System.out.println("5. 학생 수정");
-            System.out.println("6. 학생 삭제");
+            System.out.println("2. 활성화 학생 조회");
+            System.out.println("3. 삭제 학생 조회");
+            System.out.println("4. 학생 등록");
+            System.out.println("5. 학생 조회 (ID)");
+            System.out.println("6. 학생 수정");
+            System.out.println("7. 학생 삭제");
             System.out.println("0. 뒤로가기");
             System.out.print("선택하세요: ");
 
@@ -38,11 +39,12 @@ public class StudentView {
 
             switch (choice) {
                 case 1 -> getAllStudents();
-                case 2 -> getDeleteStudents();
-                case 3 -> registerStudent();
-                case 4 -> getStudentById();
-                case 5 -> updateStudent();
-                case 6 -> deleteStudent();
+                case 2 -> getActiveStudents();
+                case 3 -> getDeleteStudents();
+                case 4 -> registerStudent();
+                case 5 -> getStudentById();
+                case 6 -> updateStudent();
+                case 7 -> deleteStudent();
                 case 0 -> {
                     System.out.println("메인 화면으로 돌아갑니다.");
                     return;
@@ -71,6 +73,25 @@ public class StudentView {
         }
     }
 
+    /**
+     * 활성 학생만 조회(Read)
+     * - 활성화 상태인 학생 목록 조회
+     */
+    private void getActiveStudents() {
+        List<Students> students = studentService.getActiveStudents();
+
+        if (students.isEmpty()) {
+            System.out.println("활성화된 학생이 없습니다.");
+        } else {
+            System.out.println("\n===== 활성 학생 전체 목록 =====");
+            students.forEach(student -> System.out.println(student));
+        }
+    }
+
+    /**
+     * 비활성화(삭제) 학생만 조회(Read)
+     * - 비활성화 상태인 학생 목록 조회
+     */
     private void getDeleteStudents() {
         List<Students> students = studentService.getDeleteStudents();
 

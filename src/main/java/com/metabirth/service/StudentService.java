@@ -30,8 +30,19 @@ public class StudentService {
         return studentDao.getAllStudents();
     }
 
+    public List<Students> getActiveStudents() {
+        List<Students> users = studentDao.getActiveStudents();
+
+        if(users == null) {
+            log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
+            return null;
+        }
+
+        return studentDao.getActiveStudents();
+    }
+
     public List<Students> getDeleteStudents() {
-        List<Students> users = studentDao.getAllStudents();
+        List<Students> users = studentDao.getDeleteStudents();
 
         if(users == null) {
             log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
@@ -39,6 +50,14 @@ public class StudentService {
         }
 
         return studentDao.getDeleteStudents();
+    }
+
+    public boolean deleteStudent(int studentId) throws SQLException {
+        Students existingStudent = getStudentById(studentId);
+        if (existingStudent == null) {
+            throw new IllegalArgumentException("삭제할 사용자를 찾을 수 없습니다.");
+        }
+        return studentDao.deleteUser(studentId);
     }
 
     public Boolean registerStudent(Students student) throws SQLException {
@@ -77,13 +96,5 @@ public class StudentService {
 
         // 3️⃣ 업데이트 수행
         return result;
-    }
-
-    public boolean deleteStudent(int studentId) throws SQLException {
-        Students existingStudent = getStudentById(studentId);
-        if (existingStudent == null) {
-            throw new IllegalArgumentException("삭제할 사용자를 찾을 수 없습니다.");
-        }
-        return studentDao.deleteUser(studentId);
     }
 }

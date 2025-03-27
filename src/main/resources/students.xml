@@ -4,7 +4,13 @@
         SELECT
         *
         FROM students
-        WHERE status != 1
+    </query>
+
+    <query id="getActiveStudents">
+        SELECT
+        *
+        FROM students
+        WHERE status = 0
     </query>
 
     <query id="getDeleteStudents">
