@@ -27,29 +27,29 @@ public class StudentService {
             return null;
         }
 
-        return studentDao.getAllStudents();
+        return students;
     }
 
     public List<Students> getActiveStudents() {
-        List<Students> users = studentDao.getActiveStudents();
+        List<Students> students = studentDao.getActiveStudents();
 
-        if(users == null) {
+        if(students == null) {
             log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
             return null;
         }
 
-        return studentDao.getActiveStudents();
+        return students;
     }
 
     public List<Students> getDeleteStudents() {
-        List<Students> users = studentDao.getDeleteStudents();
+        List<Students> students = studentDao.getDeleteStudents();
 
-        if(users == null) {
+        if(students == null) {
             log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
             return null;
         }
 
-        return studentDao.getDeleteStudents();
+        return students;
     }
 
     public boolean deleteStudent(int studentId) throws SQLException {

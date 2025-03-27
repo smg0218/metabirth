@@ -27,6 +27,28 @@ public class AttendanceService {
             return null;
         }
 
-        return attendanceDao.getAllAttendances();
+        return attendance;
+    }
+
+    public List<Attendances> getCheckInAllAttendances() throws SQLException {
+        List<Attendances> attendance = attendanceDao.getCheckInAllAttendances();
+
+        if(attendance == null) {
+            log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
+            return null;
+        }
+
+        return attendance;
+    }
+
+    public List<Attendances> getCheckOutAllAttendances() throws SQLException {
+        List<Attendances> attendance = attendanceDao.getCheckOutAllAttendances();
+
+        if(attendance == null) {
+            log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
+            return null;
+        }
+
+        return attendance;
     }
 }

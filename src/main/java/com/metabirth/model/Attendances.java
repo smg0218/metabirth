@@ -1,5 +1,7 @@
 package com.metabirth.model;
 
+import com.metabirth.util.TimeUtil;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 public class Attendances {
     private int attendanceId;
     private int studentId;
-    private boolean attendanceStatus;
+    private byte attendanceStatus; // 0: 관리자가 직접 데이터를 넣음, 1: 체크인 완료, 2: 체크아웃 완료, 3: 체크인, 체크아웃 완료
     private LocalDateTime checkinTime;
     private LocalDateTime checkoutTime;
     private Date attendanceDate;
@@ -16,7 +18,7 @@ public class Attendances {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
-    public Attendances(int attendanceId, int studentId, boolean attendanceStatus,
+    public Attendances(int attendanceId, int studentId, byte attendanceStatus,
                        LocalDateTime checkinTime, LocalDateTime checkoutTime, Date attendanceDate,
                        boolean status, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.attendanceId = attendanceId;
@@ -47,11 +49,11 @@ public class Attendances {
         this.studentId = studentId;
     }
 
-    public boolean isAttendanceStatus() {
+    public byte isAttendanceStatus() {
         return attendanceStatus;
     }
 
-    public void setAttendanceStatus(boolean attendanceStatus) {
+    public void setAttendanceStatus(byte attendanceStatus) {
         this.attendanceStatus = attendanceStatus;
     }
 
@@ -116,14 +118,14 @@ public class Attendances {
         return "Attendances{" +
                 "출석Id: " + attendanceId +
                 ", 학생Id: " + studentId +
-                ", 출석상태: " + attendanceStatus +
-                ", 체크인시간: " + checkinTime +
-                ", 체크아웃시간: " + checkoutTime +
+                ", 출석상태: " + convertAttendanceStatus(attendanceStatus) +
+                ", 체크인시간: " + (checkinTime != null ? TimeUtil.formatLocalDateTime(checkinTime) : null) +
+                ", 체크아웃시간: " + (checkoutTime != null ? TimeUtil.formatLocalDateTime(checkoutTime) : null) +
                 ", 출석날짜: " + attendanceDate +
                 ", 삭제여부: " + status +
                 ", 생성일: " + createdAt +
-                ", 수정일: " + updatedAt +
-                ", 삭제일: " + deletedAt +
+                ", 수정일: " + (updatedAt != null ? TimeUtil.formatLocalDateTime(updatedAt) : null) +
+                ", 삭제일: " + (deletedAt != null ? TimeUtil.formatLocalDateTime(deletedAt) : null) +
                 '}';
     }
 
@@ -137,5 +139,25 @@ public class Attendances {
     @Override
     public int hashCode() {
         return Objects.hash(attendanceId, studentId, attendanceStatus, checkinTime, checkoutTime, attendanceDate, status, createdAt, updatedAt, deletedAt);
+    }
+
+    private String convertAttendanceStatus(Byte attendanceStatus) {
+        switch (attendanceStatus) {
+            case 0 -> {
+                return "관리자가 직접 데이터를 넣음";
+            }
+            case 1 -> {
+                return "체크인 완료";
+            }
+            case 2 -> {
+                return "체크아웃 완료";
+            }
+            case 3 -> {
+                return "체크인, 체크아웃 완료";
+            }
+            default -> {
+                return "잘못된 값 입력된 상태, 확인 필요!!!";
+            }
+        }
     }
 }

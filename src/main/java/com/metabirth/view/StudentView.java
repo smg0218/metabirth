@@ -27,8 +27,8 @@ public class StudentView {
             System.out.println("1. 전체 학생 조회");
             System.out.println("2. 활성화 학생 조회");
             System.out.println("3. 삭제 학생 조회");
-            System.out.println("4. 학생 등록");
-            System.out.println("5. 학생 조회 (ID)");
+            System.out.println("4. 단일 학생 조회");
+            System.out.println("5. 학생 등록");
             System.out.println("6. 학생 수정");
             System.out.println("7. 학생 삭제");
             System.out.println("0. 뒤로가기");
@@ -41,8 +41,8 @@ public class StudentView {
                 case 1 -> getAllStudents();
                 case 2 -> getActiveStudents();
                 case 3 -> getDeleteStudents();
-                case 4 -> registerStudent();
-                case 5 -> getStudentById();
+                case 4 -> getStudentById();
+                case 5 -> registerStudent();
                 case 6 -> updateStudent();
                 case 7 -> deleteStudent();
                 case 0 -> {
@@ -100,6 +100,47 @@ public class StudentView {
         } else {
             System.out.println("\n===== 삭제 학생 전체 목록 =====");
             students.forEach(student -> System.out.println(student));
+        }
+    }
+
+    /**
+     * 단일 학생 조회(Read)
+     * - 학생 ID 혹은 Email을 입력받아 단일 학생 조회
+     */
+    private void getStudentById() {
+        while (true) {
+            System.out.println("1. 학생 ID로 조회");
+            System.out.println("2. 학생 Email로 조회");
+            System.out.println("0. 뒤로가기");
+            System.out.print("선택하세요: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            Students student = null;
+            try {
+                switch (choice) {
+                    case 1 -> {
+                        System.out.print("조회할 학생 ID를 입력하세요: ");
+                        int studentId = scanner.nextInt();
+                        scanner.nextLine();
+                        student = studentService.getStudentById(studentId);
+                    }
+                    case 2 -> {
+                        System.out.print("조회할 학생 이메일을 입력하세요: ");
+                        String studentEmail = scanner.nextLine();
+                        student = studentService.getStudentByEmail(studentEmail);
+                    }
+                    case 0 -> {
+                        return;
+                    }
+                    default -> System.out.println("잘못된 입력입니다. 다시 선택하세요.");
+                }
+                System.out.println("\n===== 학생 정보 =====");
+                System.out.println(student);
+            } catch (SQLException e) {
+                System.out.println("학생 조회 중 오류가 발생했습니다.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -168,47 +209,6 @@ public class StudentView {
     }
 
     /**
-     * 단일 학생 조회(Read)
-     * - 학생 Id를 입력받아 단일 학생 조회
-     */
-    private void getStudentById() {
-        while (true) {
-            System.out.println("1. 학생 ID로 조회");
-            System.out.println("2. 학생 Email로 조회");
-            System.out.println("0. 뒤로가기");
-            System.out.print("선택하세요: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-            Students student = null;
-            try {
-                switch (choice) {
-                    case 1 -> {
-                        System.out.print("조회할 학생 ID를 입력하세요: ");
-                        int studentId = scanner.nextInt();
-                        scanner.nextLine();
-                        student = studentService.getStudentById(studentId);
-                    }
-                    case 2 -> {
-                        System.out.print("조회할 학생 이메일을 입력하세요: ");
-                        String studentEmail = scanner.nextLine();
-                        student = studentService.getStudentByEmail(studentEmail);
-                    }
-                    case 0 -> {
-                        return;
-                    }
-                    default -> System.out.println("잘못된 입력입니다. 다시 선택하세요.");
-                }
-                System.out.println("\n===== 학생 정보 =====");
-                System.out.println(student);
-            } catch (SQLException e) {
-                System.out.println("학생 조회 중 오류가 발생했습니다.");
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    /**
      * 📌 학생 정보 수정 (UPDATE)
      * - 학생 ID 혹은 이메일을 입력받아 정보를 수정
      */
@@ -221,29 +221,97 @@ public class StudentView {
             int choice = scanner.nextInt();
             scanner.nextLine();
             try {
+                Students student = null;
                 switch (choice) {
                     case 1 -> {
                         System.out.print("수정할 학생 ID를 입력하세요: ");
                         int studentId = scanner.nextInt();
                         scanner.nextLine();
-                        Students studentById = studentService.getStudentById(studentId);
-                        changeStudentInfo(studentById);
-                        return;
+                        student = studentService.getStudentById(studentId);
+                        break;
                     }
                     case 2 -> {
                         System.out.print("수정할 학생 이메일을 입력하세요: ");
                         String studentEmail = scanner.nextLine();
-                        Students studentByEmail = studentService.getStudentByEmail(studentEmail);
-                        changeStudentInfo(studentByEmail);
-                        return;
+                        student = studentService.getStudentByEmail(studentEmail);
+                        break;
                     }
                     case 0 -> {
                         return;
                     }
-                    default -> System.out.println("잘못된 입력입니다. 다시 선택하세요.");
+                    default -> {
+                        System.out.println("잘못된 입력입니다. 다시 선택하세요.");
+                        continue;
+                    }
+                }
+                Students updateStudent = new Students(student);
+
+                System.out.print("새로운 학생 이름[엔터 시 기존 이름 유지]: ");
+                String studentName = scanner.nextLine();
+                if(!studentName.isEmpty())
+                    updateStudent.setStudentName(studentName);
+
+                while(true) {
+                    System.out.print("새로운 생년월일(yyyy-mm-dd)[엔터 시 기존 생년월일 유지]: ");
+                    String birthDate = scanner.nextLine();
+                    if(!birthDate.isEmpty())
+                        updateStudent.setBirthDate(Date.valueOf(birthDate));
+
+                    break;
+                }
+
+                while(true) {
+                    System.out.print("새로운 성별(남,여)[엔터 시 기존 성별 유지]: ");
+                    String gender = scanner.nextLine();
+                    if(gender.isEmpty() || gender.equals("남") || gender.equals("여")) {
+                        if(!studentName.isEmpty())
+                            updateStudent.setGender(convertGender(gender));
+
+                        break;
+                    }
+                    else
+                        System.out.println("성별은 [남] 또는 [여]만 입력할 수 있습니다! 다시 입력해주세요.");
+                }
+
+                while(true) {
+                    System.out.print("새로운 전화번호(010-xxxx-xxxx)[엔터 시 기존 전화번호 유지]: ");
+                    String phone = scanner.nextLine();
+                    if(!phone.isEmpty())
+                        updateStudent.setPhone(phone);
+
+                    break;
+                }
+
+                System.out.print("새로운 이메일[엔터 시 기존 이메일 유지]: ");
+                String email = scanner.nextLine();
+                if(!email.isEmpty())
+                    updateStudent.setEmail(email);
+
+                System.out.print("새로운 비밀번호[엔터 시 기존 비밀번호 유지]: ");
+                String password = scanner.nextLine();
+                if(!password.isEmpty())
+                    updateStudent.setPassword(password);
+
+                System.out.print("새로운 주소[엔터 시 기존 주소 유지]: ");
+                String address = scanner.nextLine();
+                if(!address.isEmpty())
+                    updateStudent.setAddress(address);
+
+                if(student.equals(updateStudent)) {
+                    System.out.println("변경사항이 없습니다!");
+                    return;
+                }
+
+                boolean success = studentService.updateStudent(updateStudent);
+                if (success) {
+                    System.out.println("사용자 정보가 성공적으로 수정되었습니다.");
+                } else {
+                    System.out.println("사용자 정보 수정에 실패하였습니다.");
                 }
             } catch (SQLException e) {
-                System.out.println("학생 수정 중 오류가 발생했습니다.");
+                System.out.println("사용자 정보 수정 중 오류가 발생했습니다.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -285,9 +353,6 @@ public class StudentView {
                     }
                 }
 
-                if(student == null)
-                    throw new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다.");
-
                 boolean success = studentService.deleteStudent(student.getStudentId());
                 if (success) {
                     System.out.println("학생이 성공적으로 삭제되었습니다.");
@@ -299,82 +364,6 @@ public class StudentView {
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
-        }
-    }
-
-    /**
-     * 학생 정보 수정을 실행하는 메서드
-     * @param student : 변경할 student의 변경 전 정보
-     */
-    private void changeStudentInfo(Students student) {
-        Students updateStudent = new Students(student);
-
-        System.out.print("새로운 학생 이름[엔터 시 기존 이름 유지]: ");
-        String studentName = scanner.nextLine();
-        if(!studentName.isEmpty())
-            updateStudent.setStudentName(studentName);
-
-        while(true) {
-            System.out.print("새로운 생년월일(yyyy-mm-dd)[엔터 시 기존 생년월일 유지]: ");
-            String birthDate = scanner.nextLine();
-            if(!birthDate.isEmpty())
-                updateStudent.setBirthDate(Date.valueOf(birthDate));
-
-            break;
-        }
-
-        while(true) {
-            System.out.print("새로운 성별(남,여)[엔터 시 기존 성별 유지]: ");
-            String gender = scanner.nextLine();
-            if(gender.isEmpty() || gender.equals("남") || gender.equals("여")) {
-                if(!studentName.isEmpty())
-                    updateStudent.setGender(convertGender(gender));
-                break;
-            }
-            else
-                System.out.println("성별은 [남] 또는 [여]만 입력할 수 있습니다! 다시 입력해주세요.");
-        }
-
-        while(true) {
-            System.out.print("새로운 전화번호(010-xxxx-xxxx)[엔터 시 기존 전화번호 유지]: ");
-            String phone = scanner.nextLine();
-            if(!phone.isEmpty())
-                updateStudent.setPhone(phone);
-
-            break;
-        }
-
-        System.out.print("새로운 이메일[엔터 시 기존 이메일 유지]: ");
-        String email = scanner.nextLine();
-        if(!email.isEmpty())
-            updateStudent.setEmail(email);
-
-        System.out.print("새로운 비밀번호[엔터 시 기존 비밀번호 유지]: ");
-        String password = scanner.nextLine();
-        if(!password.isEmpty())
-            updateStudent.setPassword(password);
-
-        System.out.print("새로운 주소[엔터 시 기존 주소 유지]: ");
-        String address = scanner.nextLine();
-        if(!address.isEmpty())
-            updateStudent.setAddress(address);
-
-        if(student.equals(updateStudent)) {
-            System.out.println("변경사항이 없습니다!");
-            return;
-        }
-
-        try {
-            boolean success = studentService.updateStudent(updateStudent);
-            if (success) {
-                System.out.println("사용자 정보가 성공적으로 수정되었습니다.");
-            } else {
-                System.out.println("사용자 정보 수정에 실패하였습니다.");
-            }
-        } catch (SQLException e) {
-            System.out.println("사용자 정보 수정 중 오류가 발생했습니다.");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
         }
     }
 

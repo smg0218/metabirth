@@ -6,6 +6,20 @@
         FROM attendances
     </query>
 
+    <query id="getCheckInAllAttendances">
+        SELECT
+        *
+        FROM attendances
+        where checkin_time is not null
+    </query>
+
+    <query id="getCheckOutAllAttendances">
+        SELECT
+        *
+        FROM attendances
+        where checkout_time is not null
+    </query>
+
     <query id="getDeleteStudents">
         SELECT
         *

@@ -176,7 +176,7 @@ public class Students {
         return Objects.hash(studentId, studentName, password, birthDate, gender, phone, address, email, status, createdAt, updatedAt, deletedAt);
     }
 
-    public String convertGender(Byte gender) {
+    private String convertGender(Byte gender) {
         if(gender == 1)
             return "남";
         else

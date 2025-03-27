@@ -32,7 +32,63 @@ public class AttendanceDao {
                 Attendances.add(new Attendances(
                         rs.getInt("attendance_id"),
                         rs.getInt("student_id"),
-                        rs.getBoolean("attendance_status"),
+                        rs.getByte("attendance_status"),
+                        rs.getTimestamp("checkin_time") != null ? rs.getTimestamp("checkin_time").toLocalDateTime() : null,
+                        rs.getTimestamp("checkout_time") != null ? rs.getTimestamp("checkout_time").toLocalDateTime() : null,
+                        rs.getDate("attendance_date"),
+                        rs.getBoolean("status"),
+                        rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null,
+                        rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null,
+                        rs.getTimestamp("deleted_at") != null ? rs.getTimestamp("deleted_at").toLocalDateTime() : null
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Attendances;
+    }
+
+    public List<Attendances> getCheckInAllAttendances() {
+        List<Attendances> Attendances = new ArrayList<>();
+        String query = QueryUtil.getQuery("getCheckInAllAttendances");
+
+        try(PreparedStatement stmt = con.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()){
+                Attendances.add(new Attendances(
+                        rs.getInt("attendance_id"),
+                        rs.getInt("student_id"),
+                        rs.getByte("attendance_status"),
+                        rs.getTimestamp("checkin_time") != null ? rs.getTimestamp("checkin_time").toLocalDateTime() : null,
+                        rs.getTimestamp("checkout_time") != null ? rs.getTimestamp("checkout_time").toLocalDateTime() : null,
+                        rs.getDate("attendance_date"),
+                        rs.getBoolean("status"),
+                        rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null,
+                        rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null,
+                        rs.getTimestamp("deleted_at") != null ? rs.getTimestamp("deleted_at").toLocalDateTime() : null
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Attendances;
+    }
+
+    public List<Attendances> getCheckOutAllAttendances() {
+        List<Attendances> Attendances = new ArrayList<>();
+        String query = QueryUtil.getQuery("getCheckOutAllAttendances");
+
+        try(PreparedStatement stmt = con.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()){
+                Attendances.add(new Attendances(
+                        rs.getInt("attendance_id"),
+                        rs.getInt("student_id"),
+                        rs.getByte("attendance_status"),
                         rs.getTimestamp("checkin_time") != null ? rs.getTimestamp("checkin_time").toLocalDateTime() : null,
                         rs.getTimestamp("checkout_time") != null ? rs.getTimestamp("checkout_time").toLocalDateTime() : null,
                         rs.getDate("attendance_date"),
