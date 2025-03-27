@@ -17,12 +17,12 @@ public class AttendanceDao {
 
     public AttendanceDao(Connection connection) {
         this.con = connection;
+        String fileName = PropertiesUtil.getProperty(propertiesName);
+        QueryUtil.loadQueries(fileName);
     }
 
     public List<Attendances>getAllAttendances(){
         List<Attendances> Attendances = new ArrayList<>();
-        String fileName = PropertiesUtil.getProperty(propertiesName);
-        QueryUtil.loadQueries(fileName);
         String query = QueryUtil.getQuery("getAllAttendances");
 
         try(PreparedStatement stmt = con.prepareStatement(query)) {

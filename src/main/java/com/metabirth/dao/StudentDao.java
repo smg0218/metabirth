@@ -14,12 +14,12 @@ public class StudentDao {
 
     public StudentDao(Connection connection) {
         this.con = connection;
+        String fileName = PropertiesUtil.getProperty(propertiesName);
+        QueryUtil.loadQueries(fileName);
     }
 
     public List<Students>getAllStudents(){
         List<Students> students = new ArrayList<>();
-        String fileName = PropertiesUtil.getProperty(propertiesName);
-        QueryUtil.loadQueries(fileName);
         String query = QueryUtil.getQuery("getAllStudents");
 
         try(PreparedStatement stmt = con.prepareStatement(query)) {
