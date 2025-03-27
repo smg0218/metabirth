@@ -34,6 +34,9 @@
     </query>
 
     <query id="deleteStudent">
-        DELETE FROM students WHERE user_id = ?
+        UPDATE students
+        SET
+        status = 1, deleted_at = now()
+        WHERE student_id = ?
     </query>
 </queries>

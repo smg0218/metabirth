@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * 📌 QueryUtil (XML에서 SQL 쿼리 로딩)
- * - queries.xml 파일에서 쿼리를 읽어와 관리하는 유틸리티 클래스
+ * - [파일명].xml 파일에서 쿼리를 읽어와 관리하는 유틸리티 클래스
  */
 public class QueryUtil {
     private static final Map<String, String> queries = new HashMap<>();
@@ -20,16 +20,16 @@ public class QueryUtil {
 
     /**
      * XML 파일에서 쿼리를 읽어오는 메서드
-     * @param xmlFileName : 읽어올 xml 파일 명
+     * @param xmlFileName : 읽어올 xml 파일 명(확장자 포함)
      */
     public static void loadQueries(String xmlFileName) {
         try {
-            // 클래스 로더를 통해 "queries.xml" 파일을 InputStream으로 가져옴
+            // 클래스 로더를 통해 "[파일명].xml" 파일을 InputStream으로 가져옴
             InputStream inputStream = QueryUtil.class.getClassLoader().getResourceAsStream(xmlFileName);
 
             // InputStream이 null인 경우, 즉 파일을 찾지 못한 경우 예외 발생
             if (inputStream == null) {
-                throw new RuntimeException("queries.xml 파일을 찾을 수 없습니다.");
+                throw new RuntimeException(xmlFileName + " 파일을 찾을 수 없습니다.");
             }
 
             // DocumentBuilderFactory를 사용하여 DocumentBuilder 인스턴스를 생성

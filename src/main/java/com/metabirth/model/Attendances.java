@@ -2,6 +2,7 @@ package com.metabirth.model;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 public class Attendances {
     private int attendanceId;
@@ -113,16 +114,28 @@ public class Attendances {
     @Override
     public String toString() {
         return "Attendances{" +
-                "attendanceId=" + attendanceId +
-                ", studentId=" + studentId +
-                ", attendanceStatus=" + attendanceStatus +
-                ", checkinTime=" + checkinTime +
-                ", checkoutTime=" + checkoutTime +
-                ", attendanceDate=" + attendanceDate +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", deletedAt=" + deletedAt +
+                "출석Id: " + attendanceId +
+                ", 학생Id: " + studentId +
+                ", 출석상태: " + attendanceStatus +
+                ", 체크인시간: " + checkinTime +
+                ", 체크아웃시간: " + checkoutTime +
+                ", 출석날짜: " + attendanceDate +
+                ", 삭제여부: " + status +
+                ", 생성일: " + createdAt +
+                ", 수정일: " + updatedAt +
+                ", 삭제일: " + deletedAt +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Attendances that = (Attendances) o;
+        return attendanceId == that.attendanceId && studentId == that.studentId && attendanceStatus == that.attendanceStatus && status == that.status && Objects.equals(checkinTime, that.checkinTime) && Objects.equals(checkoutTime, that.checkoutTime) && Objects.equals(attendanceDate, that.attendanceDate) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(deletedAt, that.deletedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(attendanceId, studentId, attendanceStatus, checkinTime, checkoutTime, attendanceDate, status, createdAt, updatedAt, deletedAt);
     }
 }

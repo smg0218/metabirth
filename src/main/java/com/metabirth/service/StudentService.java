@@ -52,7 +52,7 @@ public class StudentService {
         return studentDao.addStudent(student);
     }
 
-    public Students getStudnetById(int userId) {
+    public Students getStudentById(int userId) throws SQLException {
         Students student = studentDao.getStudentById(userId);
 
         if (student == null) {
@@ -77,5 +77,13 @@ public class StudentService {
 
         // 3️⃣ 업데이트 수행
         return result;
+    }
+
+    public boolean deleteStudent(int studentId) throws SQLException {
+        Students existingStudent = getStudentById(studentId);
+        if (existingStudent == null) {
+            throw new IllegalArgumentException("삭제할 사용자를 찾을 수 없습니다.");
+        }
+        return studentDao.deleteUser(studentId);
     }
 }

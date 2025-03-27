@@ -152,4 +152,19 @@ public class StudentDao {
         }
         return false;
     }
+
+    public boolean deleteUser(int studentId) {
+        String query = QueryUtil.getQuery("deleteStudent");
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, studentId);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

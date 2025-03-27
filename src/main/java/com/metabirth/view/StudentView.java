@@ -2,7 +2,6 @@ package com.metabirth.view;
 
 import com.metabirth.model.Students;
 import com.metabirth.service.StudentService;
-import com.metabirth.util.DateUtil;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -53,6 +52,10 @@ public class StudentView {
         }
     }
 
+    /**
+     * 학생 전체 조회(Read)
+     * - 학생 전체 목록 조회
+     */
     private void getAllStudents() {
         try {
             List<Students> students = studentService.getAllStudent();
@@ -80,8 +83,8 @@ public class StudentView {
     }
 
     /**
-     * 📌 사용자 등록 (CREATE)
-     * - 사용자 정보를 입력받아 새로운 사용자를 등록
+     * 📌 학생 등록 (CREATE)
+     * - 학생 정보를 입력받아 새로운 학생을 등록
      */
     private void registerStudent() {
         String studentName, birthDate, gender, phone, email, address, password = null;
@@ -143,29 +146,42 @@ public class StudentView {
         }
     }
 
+    /**
+     * 단일 학생 조회(Read)
+     * - 학생 Id를 입력받아 단일 학생 조회
+     */
     private void getStudentById() {
         System.out.print("조회할 학생 ID를 입력하세요: ");
         int userId = scanner.nextInt();
         scanner.nextLine(); // 개행 문자 처리
 
         try {
-            Students students = studentService.getStudnetById(userId);
-            System.out.println("\n===== 사용자 정보 =====");
+            Students students = studentService.getStudentById(userId);
+            System.out.println("\n===== 학생 정보 =====");
             System.out.println(students);
-        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+            System.out.println("학생 조회 중 오류가 발생했습니다.");
+        }
+        catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
 
     /**
-     * 📌 사용자 정보 수정 (UPDATE)
-     * - 사용자 ID를 입력받아 정보를 수정
+     * 📌 학생 정보 수정 (UPDATE)
+     * - 학생 ID를 입력받아 정보를 수정
      */
     private void updateStudent() {
         System.out.print("수정할 학생 ID를 입력하세요: ");
         int studentId = scanner.nextInt();
         scanner.nextLine();
-        Students student = studentService.getStudnetById(studentId);
+        Students student = null;
+        try {
+            student = studentService.getStudentById(studentId);
+        } catch (SQLException e) {
+            System.out.println("학생 정보 수정 중 오류가 발생했습니다.");
+            return;
+        }
         Students updateStudent = new Students(student);
 
         System.out.print("새로운 학생 이름[엔터 시 기존 이름 유지]: ");
@@ -238,13 +254,33 @@ public class StudentView {
     }
 
     /**
-     * 📌 사용자 삭제 (DELETE)
-     * - 사용자 ID를 입력받아 삭제
+     * 📌 학생 삭제 (DELETE)
+     * - 학생 ID를 입력받아 삭제
      */
     private void deleteStudent() {
-        System.out.println("미완성입니다.");
+        System.out.print("삭제할 학생 ID를 입력하세요: ");
+        int studentId = scanner.nextInt();
+        scanner.nextLine(); // 개행 문자 처리
+
+        try {
+            boolean success = studentService.deleteStudent(studentId);
+            if (success) {
+                System.out.println("학생이 성공적으로 삭제되었습니다.");
+            } else {
+                System.out.println("학생 삭제에 실패하였습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("학생 삭제 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+    /**
+     * String으로 입력받은 성별 정보를 Byte 타입으로 변경
+     * @param gender : String으로 입력받은 성별 정보
+     * @return : byte 값으로 바뀐 성별정보(남: 1, 여: 0)
+     */
     private Byte convertGender(String gender) {
         if(gender.equals("남"))
             return 1;
