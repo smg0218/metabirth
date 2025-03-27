@@ -17,20 +17,23 @@
     <query id="getStudentById">
         SELECT
         *
-        FROM users
-        WHERE user_id = ?
+        FROM students
+        WHERE student_id = ?
     </query>
 
     <query id="addStudent">
-        INSERT INTO users (username, email, password_hash, role_id, created_at)
-        VALUES (?, ?, ?, ?, now())
+        INSERT INTO students (student_name, password, birth_date, email, gender, phone, address, status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, now())
     </query>
 
     <query id="updateStudent">
-        UPDATE users SET username = ?, email = ?, password_hash = ?, role_id = ? WHERE user_id = ?
+        UPDATE students
+        SET
+        student_name = ?, password = ?, birth_date = ?, email = ?, gender = ?, phone = ?, address = ?, updated_at = now()
+        WHERE student_id = ?
     </query>
 
     <query id="deleteStudent">
-        DELETE FROM users WHERE user_id = ?
+        DELETE FROM students WHERE user_id = ?
     </query>
 </queries>

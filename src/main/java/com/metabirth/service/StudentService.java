@@ -40,4 +40,42 @@ public class StudentService {
 
         return studentDao.getDeleteStudents();
     }
+
+    public Boolean registerStudent(Students student) throws SQLException {
+        List<Students> existingStudents = studentDao.getAllStudents();
+        for (Students students : existingStudents) {
+            if (students.getEmail() == student.getEmail()) {
+                throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+            }
+        }
+
+        return studentDao.addStudent(student);
+    }
+
+    public Students getStudnetById(int userId) {
+        Students student = studentDao.getStudentById(userId);
+
+        if (student == null) {
+            throw new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다.");
+        }
+        return student;
+    }
+
+
+    public boolean updateStudent(Students student) throws SQLException {
+        List<Students> existingStudents = getAllStudent();
+        for (Students u : existingStudents) {
+            if (u.getEmail().equals(student.getEmail())) {
+                throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+            }
+        }
+
+        boolean result = studentDao.updateStudent(student);
+        if (!result) {
+            throw new SQLException("수정하는 과정에서 오류가 발생되었습니다.");
+        }
+
+        // 3️⃣ 업데이트 수행
+        return result;
+    }
 }

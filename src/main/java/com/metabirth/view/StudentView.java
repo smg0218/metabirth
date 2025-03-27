@@ -2,8 +2,10 @@ package com.metabirth.view;
 
 import com.metabirth.model.Students;
 import com.metabirth.service.StudentService;
+import com.metabirth.util.DateUtil;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
@@ -77,17 +79,82 @@ public class StudentView {
         }
     }
 
-    private void getStudentById() {
-        System.out.println("미완성입니다.");
-    }
-
-
     /**
      * 📌 사용자 등록 (CREATE)
      * - 사용자 정보를 입력받아 새로운 사용자를 등록
      */
     private void registerStudent() {
-        System.out.println("미완성입니다.");
+        String studentName, birthDate, gender, phone, email, address, password = null;
+        System.out.print("학생 이름: ");
+        studentName = scanner.nextLine();
+
+        while(true) {
+            System.out.print("생년월일(yyyy-mm-dd): ");
+            birthDate = scanner.nextLine();
+
+            break;
+        }
+
+        while(true) {
+            System.out.print("성별(남,여): ");
+            gender = scanner.nextLine();
+
+            if(gender.equals("남") || gender.equals("여"))
+                break;
+            else
+                System.out.println("성별은 [남] 또는 [여]만 입력할 수 있습니다! 다시 입력해주세요.");
+        }
+
+        while(true) {
+            System.out.print("전화번호(010-xxxx-xxxx): ");
+            phone = scanner.nextLine();
+
+            break;
+        }
+
+        System.out.print("이메일: ");
+        email = scanner.nextLine();
+
+        System.out.print("비밀번호: ");
+        password = scanner.nextLine();
+
+        System.out.print("주소: ");
+        address = scanner.nextLine();
+
+        Students student = new Students(
+                0, studentName, password,
+                Date.valueOf(birthDate),
+                convertGender(gender),
+                phone, address, email,
+                false, null, null, null);
+
+        try {
+            Boolean success = studentService.registerStudent(student);
+
+            if(success) {
+                System.out.println("학생이 성공적으로 추가되었습니다.");
+            } else {
+                System.out.println("학생 등록에 실패했습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("학생 등록 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void getStudentById() {
+        System.out.print("조회할 학생 ID를 입력하세요: ");
+        int userId = scanner.nextInt();
+        scanner.nextLine(); // 개행 문자 처리
+
+        try {
+            Students students = studentService.getStudnetById(userId);
+            System.out.println("\n===== 사용자 정보 =====");
+            System.out.println(students);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -95,7 +162,79 @@ public class StudentView {
      * - 사용자 ID를 입력받아 정보를 수정
      */
     private void updateStudent() {
-        System.out.println("미완성입니다.");
+        System.out.print("수정할 학생 ID를 입력하세요: ");
+        int studentId = scanner.nextInt();
+        scanner.nextLine();
+        Students student = studentService.getStudnetById(studentId);
+        Students updateStudent = new Students(student);
+
+        System.out.print("새로운 학생 이름[엔터 시 기존 이름 유지]: ");
+        String studentName = scanner.nextLine();
+        if(!studentName.isEmpty())
+            updateStudent.setStudentName(studentName);
+
+        while(true) {
+            System.out.print("새로운 생년월일(yyyy-mm-dd)[엔터 시 기존 생년월일 유지]: ");
+            String birthDate = scanner.nextLine();
+            if(!birthDate.isEmpty())
+                updateStudent.setBirthDate(Date.valueOf(birthDate));
+
+            break;
+        }
+
+        while(true) {
+            System.out.print("새로운 성별(남,여)[엔터 시 기존 성별 유지]: ");
+            String gender = scanner.nextLine();
+            if(gender.isEmpty() || gender.equals("남") || gender.equals("여")) {
+                if(!studentName.isEmpty())
+                    updateStudent.setGender(convertGender(gender));
+                break;
+            }
+            else
+                System.out.println("성별은 [남] 또는 [여]만 입력할 수 있습니다! 다시 입력해주세요.");
+        }
+
+        while(true) {
+            System.out.print("새로운 전화번호(010-xxxx-xxxx)[엔터 시 기존 전화번호 유지]: ");
+            String phone = scanner.nextLine();
+            if(!phone.isEmpty())
+                updateStudent.setPhone(phone);
+
+            break;
+        }
+
+        System.out.print("새로운 이메일[엔터 시 기존 이메일 유지]: ");
+        String email = scanner.nextLine();
+        if(!email.isEmpty())
+            updateStudent.setEmail(email);
+
+        System.out.print("새로운 비밀번호[엔터 시 기존 비밀번호 유지]: ");
+        String password = scanner.nextLine();
+        if(!password.isEmpty())
+            updateStudent.setPassword(password);
+
+        System.out.print("새로운 주소[엔터 시 기존 주소 유지]: ");
+        String address = scanner.nextLine();
+        if(!address.isEmpty())
+            updateStudent.setAddress(address);
+
+        if(student.equals(updateStudent)) {
+            System.out.println("변경사항이 없습니다!");
+            return;
+        }
+
+        try {
+            boolean success = studentService.updateStudent(updateStudent);
+            if (success) {
+                System.out.println("사용자 정보가 성공적으로 수정되었습니다.");
+            } else {
+                System.out.println("사용자 정보 수정에 실패하였습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("사용자 정보 수정 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -104,5 +243,12 @@ public class StudentView {
      */
     private void deleteStudent() {
         System.out.println("미완성입니다.");
+    }
+
+    private Byte convertGender(String gender) {
+        if(gender.equals("남"))
+            return 1;
+        else
+            return 0;
     }
 }

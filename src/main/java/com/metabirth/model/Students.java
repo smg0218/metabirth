@@ -1,7 +1,8 @@
 package com.metabirth.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.sql.Date;
+import java.util.Objects;
 
 public class Students {
     private int studentId;
@@ -30,6 +31,21 @@ public class Students {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+    }
+
+    public Students(Students student) {
+        this.studentId = student.studentId;
+        this.studentName = student.studentName;
+        this.password = student.password;
+        this.birthDate = student.birthDate;
+        this.gender = student.gender;
+        this.phone = student.phone;
+        this.address = student.address;
+        this.email = student.email;
+        this.status = student.status;
+        this.createdAt = student.createdAt;
+        this.updatedAt = student.updatedAt;
+        this.deletedAt = student.deletedAt;
     }
 
     public int getStudentId() {
@@ -144,5 +160,17 @@ public class Students {
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Students students = (Students) o;
+        return studentId == students.studentId && gender == students.gender && status == students.status && Objects.equals(studentName, students.studentName) && Objects.equals(password, students.password) && Objects.equals(birthDate, students.birthDate) && Objects.equals(phone, students.phone) && Objects.equals(address, students.address) && Objects.equals(email, students.email) && Objects.equals(createdAt, students.createdAt) && Objects.equals(updatedAt, students.updatedAt) && Objects.equals(deletedAt, students.deletedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentId, studentName, password, birthDate, gender, phone, address, email, status, createdAt, updatedAt, deletedAt);
     }
 }
