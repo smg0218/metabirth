@@ -1,9 +1,7 @@
 package com.metabirth.view;
 
 import com.metabirth.model.Attendances;
-import com.metabirth.model.Students;
 import com.metabirth.service.AttendanceService;
-import com.metabirth.service.StudentService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -57,13 +55,13 @@ public class AttendanceView {
             List<Attendances> attendances = attendanceService.getAllAttendance();
 
             if (attendances.isEmpty()) {
-                System.out.println("등록된 학생이 없습니다.");
+                System.out.println("등록된 출석 정보가 없습니다.");
             } else {
-                System.out.println("\n===== 전체 학생 목록 =====");
+                System.out.println("\n===== 전체 출석 목록 =====");
                 attendances.forEach(student -> System.out.println(student));
             }
         } catch (SQLException e) {
-            System.out.println("학생 목록을 조회하는 중 오류가 발생했습니다.");
+            System.out.println("출석 목록을 조회하는 중 오류가 발생했습니다.");
         }
     }
 

@@ -17,18 +17,15 @@ import java.util.Map;
 public class QueryUtil {
     private static final Map<String, String> queries = new HashMap<>();
 
-    // XML에서 쿼리를 로드하는 정적 블록
-    static {
-        loadQueries();
-    }
 
     /**
-     * 📌 XML 파일에서 쿼리를 읽어오는 메서드
+     * XML 파일에서 쿼리를 읽어오는 메서드
+     * @param xmlFileName : 읽어올 xml 파일 명
      */
-    private static void loadQueries() {
+    public static void loadQueries(String xmlFileName) {
         try {
             // 클래스 로더를 통해 "queries.xml" 파일을 InputStream으로 가져옴
-            InputStream inputStream = QueryUtil.class.getClassLoader().getResourceAsStream("queries.xml");
+            InputStream inputStream = QueryUtil.class.getClassLoader().getResourceAsStream(xmlFileName);
 
             // InputStream이 null인 경우, 즉 파일을 찾지 못한 경우 예외 발생
             if (inputStream == null) {

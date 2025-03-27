@@ -1,7 +1,7 @@
 package com.metabirth.dao;
 
 import com.metabirth.model.Attendances;
-import com.metabirth.model.Students;
+import com.metabirth.util.PropertiesUtil;
 import com.metabirth.util.QueryUtil;
 
 import java.sql.Connection;
@@ -13,6 +13,7 @@ import java.util.List;
 
 public class AttendanceDao {
     private final Connection con;
+    private final String propertiesName = "query.attendance";
 
     public AttendanceDao(Connection connection) {
         this.con = connection;
@@ -20,6 +21,8 @@ public class AttendanceDao {
 
     public List<Attendances>getAllAttendances(){
         List<Attendances> Attendances = new ArrayList<>();
+        String fileName = PropertiesUtil.getProperty(propertiesName);
+        QueryUtil.loadQueries(fileName);
         String query = QueryUtil.getQuery("getAllAttendances");
 
         try(PreparedStatement stmt = con.prepareStatement(query)) {

@@ -20,6 +20,17 @@ public class StudentService {
     }
 
     public List<Students> getAllStudent() throws SQLException {
+        List<Students> students = studentDao.getAllStudents();
+
+        if(students == null) {
+            log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
+            return null;
+        }
+
+        return studentDao.getAllStudents();
+    }
+
+    public List<Students> getDeleteStudents() {
         List<Students> users = studentDao.getAllStudents();
 
         if(users == null) {
@@ -27,6 +38,6 @@ public class StudentService {
             return null;
         }
 
-        return studentDao.getAllStudents();
+        return studentDao.getDeleteStudents();
     }
 }

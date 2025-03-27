@@ -17,6 +17,9 @@ public class StudentView {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * 학생 관리 화면
+     */
     public void showMenu() {
         while (true) {
             System.out.println("\n===== 학생 관리 시스템 =====");
@@ -64,7 +67,14 @@ public class StudentView {
     }
 
     private void getDeleteStudents() {
-        System.out.println("미완성입니다.");
+        List<Students> students = studentService.getDeleteStudents();
+
+        if (students.isEmpty()) {
+            System.out.println("삭제한 학생이 없습니다.");
+        } else {
+            System.out.println("\n===== 삭제 학생 전체 목록 =====");
+            students.forEach(student -> System.out.println(student));
+        }
     }
 
     private void getStudentById() {

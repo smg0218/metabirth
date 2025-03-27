@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queries>
+    <query id="getAllAttendances">
+        SELECT
+        *
+        FROM attendances
+    </query>
+
+    <query id="getDeleteStudents">
+        SELECT
+        *
+        FROM students
+        WHERE status = 1
+    </query>
+
+    <query id="getStudentById">
+        SELECT
+        *
+        FROM users
+        WHERE user_id = ?
+    </query>
+
+    <query id="addStudent">
+        INSERT INTO users (username, email, password_hash, role_id, created_at)
+        VALUES (?, ?, ?, ?, now())
+    </query>
+
+    <query id="updateStudent">
+        UPDATE users SET username = ?, email = ?, password_hash = ?, role_id = ? WHERE user_id = ?
+    </query>
+
+    <query id="deleteStudent">
+        DELETE FROM users WHERE user_id = ?
+    </query>
+</queries>

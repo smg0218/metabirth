@@ -28,10 +28,10 @@ public class Application {
                 case 2 -> startAttendancesManagement(connection);
                 case 0 -> {
                     connection.close();
-                    System.out.println("🚀 프로그램을 종료합니다.");
+                    System.out.println("프로그램을 종료합니다.");
                     return;
                 }
-                default -> System.out.println("❌ 잘못된 입력입니다. 다시 선택하세요.");
+                default -> System.out.println("잘못된 입력입니다! 다시 입력해주세요.");
             }
         }
     }
