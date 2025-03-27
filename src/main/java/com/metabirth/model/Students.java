@@ -1,5 +1,7 @@
 package com.metabirth.model;
 
+import com.metabirth.util.TimeUtil;
+
 import java.time.LocalDateTime;
 import java.sql.Date;
 import java.util.Objects;
@@ -147,18 +149,18 @@ public class Students {
     @Override
     public String toString() {
         return "Students{" +
-                "studentId=" + studentId +
-                ", studentName='" + studentName + '\'' +
-                ", password='" + password + '\'' +
-                ", birthDate=" + birthDate +
-                ", gender=" + gender +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", deletedAt=" + deletedAt +
+                "학생Id: " + studentId +
+                ", 이름: '" + studentName + '\'' +
+                ", 비밀번호: '" + password + '\'' +
+                ", 생년월일: " + birthDate +
+                ", 성별: " + convertGender(gender) +
+                ", 핸드폰 번호: '" + phone + '\'' +
+                ", 주소: '" + address + '\'' +
+                ", 이메일: '" + email + '\'' +
+                ", 삭제여부: " + status +
+                ", 생성일: " + TimeUtil.formatLocalDateTime(createdAt) +
+                ", 수정일: " + TimeUtil.formatLocalDateTime(updatedAt) +
+                ", 삭제일: " + TimeUtil.formatLocalDateTime(deletedAt) +
                 '}';
     }
 
@@ -172,5 +174,12 @@ public class Students {
     @Override
     public int hashCode() {
         return Objects.hash(studentId, studentName, password, birthDate, gender, phone, address, email, status, createdAt, updatedAt, deletedAt);
+    }
+
+    public String convertGender(Byte gender) {
+        if(gender == 1)
+            return "남";
+        else
+            return "여";
     }
 }
