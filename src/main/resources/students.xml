@@ -27,6 +27,13 @@
         WHERE student_id = ?
     </query>
 
+    <query id="getStudentByEmail">
+        SELECT
+        *
+        FROM students
+        WHERE email = ?
+    </query>
+
     <query id="addStudent">
         INSERT INTO students (student_name, password, birth_date, email, gender, phone, address, status, created_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, now())

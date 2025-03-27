@@ -53,10 +53,6 @@ public class StudentService {
     }
 
     public boolean deleteStudent(int studentId) throws SQLException {
-        Students existingStudent = getStudentById(studentId);
-        if (existingStudent == null) {
-            throw new IllegalArgumentException("삭제할 사용자를 찾을 수 없습니다.");
-        }
         return studentDao.deleteUser(studentId);
     }
 
@@ -73,6 +69,15 @@ public class StudentService {
 
     public Students getStudentById(int userId) throws SQLException {
         Students student = studentDao.getStudentById(userId);
+
+        if (student == null) {
+            throw new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다.");
+        }
+        return student;
+    }
+
+    public Students getStudentByEmail(String studentEmail) {
+        Students student = studentDao.getStudentByEmail(studentEmail);
 
         if (student == null) {
             throw new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다.");

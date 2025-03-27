@@ -7,6 +7,7 @@ import com.metabirth.util.QueryUtil;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class StudentDao {
     private final Connection con;
@@ -72,6 +73,7 @@ public class StudentDao {
                 ));
             }
         } catch (SQLException e) {
+            System.out.println("학생 조회 중 오류가 발생했습니다.");
             e.printStackTrace();
         }
 
@@ -102,6 +104,7 @@ public class StudentDao {
                 ));
             }
         } catch (SQLException e) {
+            System.out.println("학생 조회 중 오류가 발생했습니다.");
             e.printStackTrace();
         }
 
@@ -125,6 +128,7 @@ public class StudentDao {
             return affectedRows > 0;
 
         } catch (SQLException e) {
+            System.out.println("학생 추가 중 오류가 발생했습니다.");
             e.printStackTrace();
         }
         return false;
@@ -155,6 +159,39 @@ public class StudentDao {
                 );
             }
         } catch (SQLException e) {
+            System.out.println("학생 조회 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+
+        return student;
+    }
+
+    public Students getStudentByEmail(String studentEmail) {
+        String query = QueryUtil.getQuery("getStudentByEmail");
+        Students student = null;
+
+        try (PreparedStatement psmt = con.prepareStatement(query)) {
+            psmt.setString(1, studentEmail);
+            ResultSet rs = psmt.executeQuery();
+
+            if (rs.next()) {
+                student = new Students(
+                        rs.getInt("student_id"),
+                        rs.getString("student_name"),
+                        rs.getString("password"),
+                        rs.getDate("birth_date"),
+                        rs.getByte("gender"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getBoolean("status"),
+                        rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null,
+                        rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null,
+                        rs.getTimestamp("deleted_at") != null ? rs.getTimestamp("deleted_at").toLocalDateTime() : null
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("학생 조회 중 오류가 발생했습니다.");
             e.printStackTrace();
         }
         return student;
@@ -177,6 +214,7 @@ public class StudentDao {
             return affectedRows > 0;
 
         } catch (SQLException e) {
+            System.out.println("학생 수정 중 오류가 발생했습니다.");
             e.printStackTrace();
         }
         return false;
@@ -192,6 +230,7 @@ public class StudentDao {
             return affectedRows > 0;
 
         } catch (SQLException e) {
+            System.out.println("학생 삭제 중 오류가 발생했습니다.");
             e.printStackTrace();
         }
         return false;

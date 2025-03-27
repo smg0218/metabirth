@@ -172,37 +172,141 @@ public class StudentView {
      * - 학생 Id를 입력받아 단일 학생 조회
      */
     private void getStudentById() {
-        System.out.print("조회할 학생 ID를 입력하세요: ");
-        int userId = scanner.nextInt();
-        scanner.nextLine(); // 개행 문자 처리
-
-        try {
-            Students students = studentService.getStudentById(userId);
-            System.out.println("\n===== 학생 정보 =====");
-            System.out.println(students);
-        } catch (SQLException e) {
-            System.out.println("학생 조회 중 오류가 발생했습니다.");
-        }
-        catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        while (true) {
+            System.out.println("1. 학생 ID로 조회");
+            System.out.println("2. 학생 Email로 조회");
+            System.out.println("0. 뒤로가기");
+            System.out.print("선택하세요: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            Students student = null;
+            try {
+                switch (choice) {
+                    case 1 -> {
+                        System.out.print("조회할 학생 ID를 입력하세요: ");
+                        int studentId = scanner.nextInt();
+                        scanner.nextLine();
+                        student = studentService.getStudentById(studentId);
+                    }
+                    case 2 -> {
+                        System.out.print("조회할 학생 이메일을 입력하세요: ");
+                        String studentEmail = scanner.nextLine();
+                        student = studentService.getStudentByEmail(studentEmail);
+                    }
+                    case 0 -> {
+                        return;
+                    }
+                    default -> System.out.println("잘못된 입력입니다. 다시 선택하세요.");
+                }
+                System.out.println("\n===== 학생 정보 =====");
+                System.out.println(student);
+            } catch (SQLException e) {
+                System.out.println("학생 조회 중 오류가 발생했습니다.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
     /**
      * 📌 학생 정보 수정 (UPDATE)
-     * - 학생 ID를 입력받아 정보를 수정
+     * - 학생 ID 혹은 이메일을 입력받아 정보를 수정
      */
     private void updateStudent() {
-        System.out.print("수정할 학생 ID를 입력하세요: ");
-        int studentId = scanner.nextInt();
-        scanner.nextLine();
-        Students student = null;
-        try {
-            student = studentService.getStudentById(studentId);
-        } catch (SQLException e) {
-            System.out.println("학생 정보 수정 중 오류가 발생했습니다.");
-            return;
+        while (true) {
+            System.out.println("1. 학생 ID로 변경");
+            System.out.println("2. 학생 Email로 변경");
+            System.out.println("0. 뒤로가기");
+            System.out.print("선택하세요: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            try {
+                switch (choice) {
+                    case 1 -> {
+                        System.out.print("수정할 학생 ID를 입력하세요: ");
+                        int studentId = scanner.nextInt();
+                        scanner.nextLine();
+                        Students studentById = studentService.getStudentById(studentId);
+                        changeStudentInfo(studentById);
+                        return;
+                    }
+                    case 2 -> {
+                        System.out.print("수정할 학생 이메일을 입력하세요: ");
+                        String studentEmail = scanner.nextLine();
+                        Students studentByEmail = studentService.getStudentByEmail(studentEmail);
+                        changeStudentInfo(studentByEmail);
+                        return;
+                    }
+                    case 0 -> {
+                        return;
+                    }
+                    default -> System.out.println("잘못된 입력입니다. 다시 선택하세요.");
+                }
+            } catch (SQLException e) {
+                System.out.println("학생 수정 중 오류가 발생했습니다.");
+            }
         }
+    }
+
+    /**
+     * 📌 학생 삭제 (DELETE)
+     * - 학생 ID 혹은 이메일을 입력받아 삭제
+     */
+    private void deleteStudent() {
+        while (true) {
+            System.out.println("1. 학생 ID로 삭제");
+            System.out.println("2. 학생 Email로 삭제");
+            System.out.println("0. 뒤로가기");
+            System.out.print("선택하세요: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            try {
+                Students student = null;
+                switch (choice) {
+                    case 1 -> {
+                        System.out.print("삭제할 학생 ID를 입력하세요: ");
+                        int studentId = scanner.nextInt();
+                        scanner.nextLine();
+                        student = studentService.getStudentById(studentId);
+                        break;
+                    }
+                    case 2 -> {
+                        System.out.print("삭제할 학생 이메일을 입력하세요: ");
+                        String studentEmail = scanner.nextLine();
+                        student = studentService.getStudentByEmail(studentEmail);
+                        break;
+                    }
+                    case 0 -> {
+                        return;
+                    }
+                    default -> {
+                        System.out.println("잘못된 입력입니다. 다시 선택하세요.");
+                        continue;
+                    }
+                }
+
+                if(student == null)
+                    throw new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다.");
+
+                boolean success = studentService.deleteStudent(student.getStudentId());
+                if (success) {
+                    System.out.println("학생이 성공적으로 삭제되었습니다.");
+                } else {
+                    System.out.println("학생 삭제에 실패하였습니다.");
+                }
+            } catch (SQLException e) {
+                System.out.println("학생 삭제 중 오류가 발생했습니다.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * 학생 정보 수정을 실행하는 메서드
+     * @param student : 변경할 student의 변경 전 정보
+     */
+    private void changeStudentInfo(Students student) {
         Students updateStudent = new Students(student);
 
         System.out.print("새로운 학생 이름[엔터 시 기존 이름 유지]: ");
@@ -269,29 +373,6 @@ public class StudentView {
             }
         } catch (SQLException e) {
             System.out.println("사용자 정보 수정 중 오류가 발생했습니다.");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    /**
-     * 📌 학생 삭제 (DELETE)
-     * - 학생 ID를 입력받아 삭제
-     */
-    private void deleteStudent() {
-        System.out.print("삭제할 학생 ID를 입력하세요: ");
-        int studentId = scanner.nextInt();
-        scanner.nextLine(); // 개행 문자 처리
-
-        try {
-            boolean success = studentService.deleteStudent(studentId);
-            if (success) {
-                System.out.println("학생이 성공적으로 삭제되었습니다.");
-            } else {
-                System.out.println("학생 삭제에 실패하였습니다.");
-            }
-        } catch (SQLException e) {
-            System.out.println("학생 삭제 중 오류가 발생했습니다.");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
