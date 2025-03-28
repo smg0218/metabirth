@@ -133,12 +133,12 @@ public class StudentDao {
         return false;
     }
 
-    public Students getStudentById(int userId) {
+    public Students getStudentById(int studentId) {
         String query = QueryUtil.getQuery("getStudentById");
         Students student = null;
 
         try (PreparedStatement psmt = con.prepareStatement(query)) {
-            psmt.setInt(1, userId);
+            psmt.setInt(1, studentId);
             ResultSet rs = psmt.executeQuery();
 
             if (rs.next()) {
@@ -148,9 +148,9 @@ public class StudentDao {
                         rs.getString("password"),
                         rs.getDate("birth_date"),
                         rs.getByte("gender"),
-                        rs.getString("email"),
                         rs.getString("phone"),
                         rs.getString("address"),
+                        rs.getString("email"),
                         rs.getBoolean("status"),
                         rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null,
                         rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null,
@@ -180,9 +180,9 @@ public class StudentDao {
                         rs.getString("password"),
                         rs.getDate("birth_date"),
                         rs.getByte("gender"),
-                        rs.getString("email"),
                         rs.getString("phone"),
                         rs.getString("address"),
+                        rs.getString("email"),
                         rs.getBoolean("status"),
                         rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null,
                         rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null,
@@ -208,6 +208,7 @@ public class StudentDao {
             psmt.setString(6, student.getPhone());
             psmt.setString(7, student.getAddress());
             psmt.setInt(8, student.getStudentId());
+            System.out.println("psmt : " + psmt);
 
             int affectedRows = psmt.executeUpdate();
             return affectedRows > 0;

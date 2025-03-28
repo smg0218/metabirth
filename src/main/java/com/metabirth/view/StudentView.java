@@ -152,8 +152,7 @@ public class StudentView {
      * - 학생 정보를 입력받아 새로운 학생을 등록
      */
     private void registerStudent() {
-        String studentName, birthDate, gender, phone, email, address, password = null;
-        Date sqlDate = null;
+        String studentName, birthDate, gender, phone, email, address, password;
         System.out.print("학생 이름: ");
         studentName = scanner.nextLine();
 
@@ -161,7 +160,7 @@ public class StudentView {
             System.out.print("생년월일(yyyy-mm-dd): ");
             birthDate = scanner.nextLine();
 
-            sqlDate = TimeUtil.formatStringDateToSqlDate(birthDate);
+            Date sqlDate = TimeUtil.formatStringDateToSqlDate(birthDate);
 
             while(true) {
                 System.out.print("성별(남,여): ");

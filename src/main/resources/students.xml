@@ -2,34 +2,34 @@
 <queries>
     <query id="getAllStudents">
         SELECT
-        *
+        student_id, student_name, password, birth_date, gender, email, phone, address, status, created_at, updated_at, deleted_at
         FROM students
     </query>
 
     <query id="getActiveStudents">
         SELECT
-        *
+        student_id, student_name, password, birth_date, gender, email, phone, address, status, created_at, updated_at, deleted_at
         FROM students
         WHERE status = 0
     </query>
 
     <query id="getDeleteStudents">
         SELECT
-        *
+        student_id, student_name, password, birth_date, gender, email, phone, address, status, created_at, updated_at, deleted_at
         FROM students
         WHERE status = 1
     </query>
 
     <query id="getStudentById">
         SELECT
-        *
+        student_id, student_name, password, birth_date, gender, email, phone, address, status, created_at, updated_at, deleted_at
         FROM students
         WHERE student_id = ?
     </query>
 
     <query id="getStudentByEmail">
         SELECT
-        *
+        student_id, student_name, password, birth_date, gender, email, phone, address, status, created_at, updated_at, deleted_at
         FROM students
         WHERE email = ?
     </query>

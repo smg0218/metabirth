@@ -60,15 +60,18 @@ public class StudentService {
         List<Students> existingStudents = studentDao.getAllStudents();
         for (Students students : existingStudents) {
             if (students.getEmail().equals(student.getEmail())) {
-                throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+                if(student.getStudentId() == students.getStudentId())
+                    continue;
+                else
+                    throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
             }
         }
 
         return studentDao.addStudent(student);
     }
 
-    public Students getStudentById(int userId) throws SQLException {
-        Students student = studentDao.getStudentById(userId);
+    public Students getStudentById(int studentId) throws SQLException {
+        Students student = studentDao.getStudentById(studentId);
 
         if (student == null) {
             throw new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다.");
@@ -88,7 +91,9 @@ public class StudentService {
 
     public boolean updateStudent(Students student) throws SQLException {
         List<Students> existingStudents = getAllStudent();
+        System.out.println("my email: " + student.getEmail());
         for (Students s : existingStudents) {
+            System.out.println("비교 이메일 : " + s.getEmail());
             if (s.getEmail().equals(student.getEmail())) {
                 throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
             }
