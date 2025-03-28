@@ -53,7 +53,7 @@ public class StudentService {
     }
 
     public boolean deleteStudent(int studentId) throws SQLException {
-        return studentDao.deleteUser(studentId);
+        return studentDao.deleteStudent(studentId);
     }
 
     public Boolean registerStudent(Students student) throws SQLException {

@@ -34,6 +34,13 @@
         WHERE student_id = ? AND status = 0
     </query>
 
+    <query id="getAttendanceById">
+        SELECT
+        *
+        FROM attendances
+        WHERE attendance_id = ?
+    </query>
+
     <query id="addAttendance">
         INSERT INTO attendances (student_id, attendance_status, checkin_time, checkout_time, attendance_date, status, created_at)
         VALUES (?, ?, ?, ?, ?, ?, now())
@@ -43,14 +50,12 @@
         UPDATE attendances SET attendance_status = ?, checkin_time = ?, checkout_time = ?, attendance_date = ?, updated_at = now() WHERE attendance_id = ?
     </query>
 
-    <query id="deleteStudent">
-        DELETE FROM users WHERE user_id = ?
-    </query>
-
-    <query id="getAttendanceById">
-        SELECT
-        *
-        FROM attendances
+    <query id="deleteAttendance">
+        UPDATE
+        attendances
+        SET
+        status = 1, deleted_at = now()
         WHERE attendance_id = ?
     </query>
+
 </queries>

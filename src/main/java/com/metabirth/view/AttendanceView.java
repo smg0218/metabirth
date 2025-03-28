@@ -305,6 +305,22 @@ public class AttendanceView {
      * - 출석 ID를 입력받아 삭제
      */
     private void deleteAttendance() {
-        System.out.println("미완성입니다.");
+        System.out.print("삭제할 출석 ID를 입력하세요: ");
+        int studentId = scanner.nextInt();
+        scanner.nextLine();
+        Attendances attendance = attendanceService.getAttendanceById(studentId);
+
+        try {
+            boolean success = attendanceService.deleteAttendance(attendance.getAttendanceId());
+            if (success) {
+                System.out.println("출석이 성공적으로 삭제되었습니다.");
+            } else {
+                System.out.println("출석 삭제에 실패하였습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("출석 삭제 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

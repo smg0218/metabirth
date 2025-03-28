@@ -219,7 +219,7 @@ public class StudentDao {
         return false;
     }
 
-    public boolean deleteUser(int studentId) {
+    public boolean deleteStudent(int studentId) {
         String query = QueryUtil.getQuery("deleteStudent");
 
         try (PreparedStatement ps = con.prepareStatement(query)) {

@@ -242,4 +242,20 @@ public class AttendanceDao {
         }
         return false;
     }
+
+    public boolean deleteAttendance(int attendanceId) {
+        String query = QueryUtil.getQuery("deleteAttendance");
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, attendanceId);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            System.out.println("학생 삭제 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

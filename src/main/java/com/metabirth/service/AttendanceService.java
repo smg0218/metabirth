@@ -118,4 +118,8 @@ public class AttendanceService {
         // 3️⃣ 업데이트 수행
         return result;
     }
+
+    public boolean deleteAttendance(int attendanceId) throws SQLException{
+        return attendanceDao.deleteAttendance(attendanceId);
+    }
 }
