@@ -154,6 +154,11 @@ public class Attendances {
         return Objects.hash(attendanceId, studentId, attendanceStatus, checkinTime, checkoutTime, attendanceDate, status, createdAt, updatedAt, deletedAt);
     }
 
+    /**
+     * Byte 타입의 변수를 받아와서 출석 상태 변환하는 메서드
+     * @param attendanceStatus : Byte 타입의 변수, 0,1,2,3 중에 하나여야 한다.
+     * @return : Byte 타입에 따라 변환된 출석 상태정보 (String)
+     */
     private String convertAttendanceStatus(Byte attendanceStatus) {
         switch (attendanceStatus) {
             case 0 -> {
@@ -169,7 +174,7 @@ public class Attendances {
                 return "체크인, 체크아웃 완료";
             }
             default -> {
-                return "잘못된 값 입력된 상태, 확인 필요!!!";
+                return "잘못된 값이 입력된 상태, 확인 필요!!!";
             }
         }
     }

@@ -176,6 +176,11 @@ public class Students {
         return Objects.hash(studentId, studentName, password, birthDate, gender, phone, address, email, status, createdAt, updatedAt, deletedAt);
     }
 
+    /**
+     * Byte 타입의 변수를 받아와서 남,여 여부를 판단하는 메서드
+     * @param gender : Byte 타입의 변수(0 혹은 1)
+     * @return : String 타입의 "남" 혹은 "여" 반환
+     */
     private String convertGender(Byte gender) {
         if(gender == 1)
             return "남";

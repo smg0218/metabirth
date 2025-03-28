@@ -2,7 +2,6 @@ package com.metabirth.view;
 
 import com.metabirth.exception.InvalidDateException;
 import com.metabirth.model.Attendances;
-import com.metabirth.model.Students;
 import com.metabirth.service.AttendanceService;
 import com.metabirth.util.TimeUtil;
 

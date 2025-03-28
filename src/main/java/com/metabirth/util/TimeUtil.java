@@ -38,6 +38,7 @@ public class TimeUtil {
 
     /**
      * yyyy-MM-dd 형태의 String 데이터를 sql.Date 타입으로 변환하는 메서드
+     * setLenient(false) 상태이기 때문에 실제로 존재하지 않는 데이터는 ParseException이 발생
      * @param date : yyyy-MM-dd 형태의 String 데이터
      * @return : sql.Date 타입으로 변환된 yyyy-MM-dd
      * @throws InvalidDateException : 변환 도중 확인된 문제 발생
@@ -55,8 +56,10 @@ public class TimeUtil {
         LocalDate inputDate = sqlDate.toLocalDate();
         LocalDate today = LocalDate.now(ZoneId.systemDefault());
 
+        // 입력받은 데이터가 오늘날짜 이후인지 확인
         if (inputDate.isAfter(today)) {
-            throw new InvalidDateException("미래 날짜는 허용되지 않습니다! \n오늘날짜: " + today +
+            throw new InvalidDateException("미래 날짜는 허용되지 않습니다!" +
+                    "\n오늘날짜: " + today +
                     " \n입력날짜: " + inputDate);
         }
 

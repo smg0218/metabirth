@@ -91,11 +91,12 @@ public class StudentService {
 
     public boolean updateStudent(Students student) throws SQLException {
         List<Students> existingStudents = getAllStudent();
-        System.out.println("my email: " + student.getEmail());
         for (Students s : existingStudents) {
-            System.out.println("비교 이메일 : " + s.getEmail());
             if (s.getEmail().equals(student.getEmail())) {
-                throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+                if(student.getStudentId() == s.getStudentId())
+                    continue;
+                else
+                    throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
             }
         }
 
