@@ -87,4 +87,35 @@ public class AttendanceService {
 
         return attendanceDao.addAttendance(attendance);
     }
+
+    public Attendances getAttendanceById(int attendanceId) {
+        Attendances attendance = attendanceDao.getAttendanceById(attendanceId);
+
+        if(attendance == null) {
+            log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
+            return null;
+        }
+
+        return attendance;
+    }
+
+    public boolean updateAttendance(Attendances attendance) throws SQLException{
+        List<Attendances> existingAttendances = getStudentAttendance(attendance.getStudentId());
+        for (Attendances a : existingAttendances) {
+            if (a.getAttendanceDate().equals(attendance.getAttendanceDate())) {
+                if(attendance.getAttendanceId() == a.getAttendanceId())
+                    continue;
+                else
+                    throw new IllegalArgumentException("이미 존재하는 날짜입니다.");
+            }
+        }
+
+        boolean result = attendanceDao.updateAttendance(attendance);
+        if (!result) {
+            throw new SQLException("수정하는 과정에서 오류가 발생되었습니다.");
+        }
+
+        // 3️⃣ 업데이트 수행
+        return result;
+    }
 }

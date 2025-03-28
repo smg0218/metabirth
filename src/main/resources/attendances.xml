@@ -39,11 +39,18 @@
         VALUES (?, ?, ?, ?, ?, ?, now())
     </query>
 
-    <query id="updateStudent">
-        UPDATE users SET username = ?, email = ?, password_hash = ?, role_id = ? WHERE user_id = ?
+    <query id="updateAttendance">
+        UPDATE attendances SET attendance_status = ?, checkin_time = ?, checkout_time = ?, attendance_date = ?, updated_at = now() WHERE attendance_id = ?
     </query>
 
     <query id="deleteStudent">
         DELETE FROM users WHERE user_id = ?
+    </query>
+
+    <query id="getAttendanceById">
+        SELECT
+        *
+        FROM attendances
+        WHERE attendance_id = ?
     </query>
 </queries>

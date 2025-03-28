@@ -33,6 +33,19 @@ public class Attendances {
         this.deletedAt = deletedAt;
     }
 
+    public Attendances(Attendances attendance) {
+        this.attendanceId = attendance.getAttendanceId();
+        this.studentId = attendance.getStudentId();
+        this.attendanceStatus = attendance.getAttendanceStatus();
+        this.checkinTime = attendance.getCheckinTime();
+        this.checkoutTime = attendance.getCheckoutTime();
+        this.attendanceDate = attendance.getAttendanceDate();
+        this.status = attendance.status;
+        this.createdAt = attendance.getCreatedAt();
+        this.updatedAt = attendance.getUpdatedAt();
+        this.deletedAt = attendance.getDeletedAt();
+    }
+
     public int getAttendanceId() {
         return attendanceId;
     }

@@ -237,7 +237,67 @@ public class AttendanceView {
      * - 출석 ID를 입력받아 정보를 수정
      */
     private void updateAttendance() {
-        System.out.println("미완성입니다.");
+        try {
+            System.out.print("수정할 출석 ID를 입력하세요: ");
+            int attendanceId = scanner.nextInt();
+            scanner.nextLine();
+            Attendances attendance = attendanceService.getAttendanceById(attendanceId);
+            Attendances updateAttendance = new Attendances(attendance);
+
+            byte attendanceStatus;
+
+            System.out.print("수정할 체크인 시간(yyyy-mm-dd hh:mm:ss)[엔터 시 기존값 유지]: ");
+            String checkinTime = scanner.nextLine();
+
+            if(!checkinTime.isEmpty())
+                updateAttendance.setCheckinTime(TimeUtil.formatStringToDateTime(checkinTime));
+
+            System.out.print("체크아웃 시간(yyyy-mm-dd hh:mm:ss)[엔터 시 기존값 유지]: ");
+            String checkoutTime = scanner.nextLine();
+
+            if(!checkoutTime.isEmpty())
+                updateAttendance.setCheckoutTime(TimeUtil.formatStringToDateTime(checkoutTime));
+
+            System.out.print("출석일(yyyy-mm-dd)[엔터 시 기존값 유지]: ");
+            String attendanceDate = scanner.nextLine();
+
+            if(!attendanceDate.isEmpty())
+                updateAttendance.setAttendanceDate(TimeUtil.formatStringDateToSqlDate(attendanceDate));
+
+            while(true) {
+                System.out.print("출석상태 변경(0: 관리자가 직접 데이터를 넣음, 1: 체크인 완료, 2: 체크아웃 완료, 3: 체크인, 체크아웃 완료): ");
+                attendanceStatus = scanner.nextByte();
+                scanner.nextLine();
+
+                if(attendanceStatus == 0 || attendanceStatus == 1 ||
+                        attendanceStatus == 2 || attendanceStatus == 3) {
+                    updateAttendance.setAttendanceStatus(attendanceStatus);
+                    break;
+                } else {
+                    System.out.println("0,1,2,3 중에서 입력해주세요!");
+                }
+
+                break;
+            }
+
+            if(attendance.equals(updateAttendance)) {
+                System.out.println("변경사항이 없습니다!");
+                return;
+            }
+
+            boolean success = attendanceService.updateAttendance(updateAttendance);
+            if (success) {
+                System.out.println("사용자 정보가 성공적으로 수정되었습니다.");
+            } else {
+                System.out.println("사용자 정보 수정에 실패하였습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("사용자 정보 수정 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println("존재하지 않는 날짜이거나 날짜 변환 도중 문제가 발생했습니다!");
+        }
     }
 
     /**
