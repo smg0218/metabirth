@@ -2,6 +2,7 @@ package com.metabirth.service;
 
 import com.metabirth.dao.AttendanceDao;
 import com.metabirth.model.Attendances;
+import com.metabirth.model.Students;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,5 +75,16 @@ public class AttendanceService {
         }
 
         return attendance;
+    }
+
+    public Boolean addAttendance(Attendances attendance) throws SQLException {
+        List<Attendances> existingAttendances = attendanceDao.getStudentAttendance(attendance.getStudentId());
+        for (Attendances attendances : existingAttendances) {
+            if (attendances.getAttendanceDate().equals(attendance.getAttendanceDate())) {
+                throw new IllegalArgumentException("이미 출석이 존재합니다.");
+            }
+        }
+
+        return attendanceDao.addAttendance(attendance);
     }
 }

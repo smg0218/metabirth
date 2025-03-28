@@ -28,6 +28,15 @@ public class TimeUtil {
     }
 
     /**
+     * yyyy-MM-dd HH:mm:ss 형태로 입력받은 String 타입을 LocalDateTime으로 변환하는 메서드
+     * @param dateTime : yyyy-MM-dd HH:mm:ss 형태로 입력받은 String 값
+     * @return : LocalDateTime 형태로 변환된 입력값
+     */
+    public static LocalDateTime formatStringToDateTime(String dateTime) {
+        return LocalDateTime.parse(dateTime, DATE_TIME_FORMATTER);
+    }
+
+    /**
      * yyyy-MM-dd 형태의 String 데이터를 sql.Date 타입으로 변환하는 메서드
      * @param date : yyyy-MM-dd 형태의 String 데이터
      * @return : sql.Date 타입으로 변환된 yyyy-MM-dd

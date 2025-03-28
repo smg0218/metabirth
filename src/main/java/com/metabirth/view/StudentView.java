@@ -1,11 +1,14 @@
 package com.metabirth.view;
 
+import com.metabirth.exception.InvalidDateException;
 import com.metabirth.model.Students;
 import com.metabirth.service.StudentService;
+import com.metabirth.util.TimeUtil;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -150,50 +153,49 @@ public class StudentView {
      */
     private void registerStudent() {
         String studentName, birthDate, gender, phone, email, address, password = null;
+        Date sqlDate = null;
         System.out.print("학생 이름: ");
         studentName = scanner.nextLine();
 
-        while(true) {
+        try {
             System.out.print("생년월일(yyyy-mm-dd): ");
             birthDate = scanner.nextLine();
 
-            break;
-        }
+            sqlDate = TimeUtil.formatStringDateToSqlDate(birthDate);
 
-        while(true) {
-            System.out.print("성별(남,여): ");
-            gender = scanner.nextLine();
+            while(true) {
+                System.out.print("성별(남,여): ");
+                gender = scanner.nextLine();
 
-            if(gender.equals("남") || gender.equals("여"))
+                if(gender.equals("남") || gender.equals("여"))
+                    break;
+                else
+                    System.out.println("성별은 [남] 또는 [여]만 입력할 수 있습니다! 다시 입력해주세요.");
+            }
+
+            while(true) {
+                System.out.print("전화번호(010-xxxx-xxxx): ");
+                phone = scanner.nextLine();
+
                 break;
-            else
-                System.out.println("성별은 [남] 또는 [여]만 입력할 수 있습니다! 다시 입력해주세요.");
-        }
+            }
 
-        while(true) {
-            System.out.print("전화번호(010-xxxx-xxxx): ");
-            phone = scanner.nextLine();
+            System.out.print("이메일: ");
+            email = scanner.nextLine();
 
-            break;
-        }
+            System.out.print("비밀번호: ");
+            password = scanner.nextLine();
 
-        System.out.print("이메일: ");
-        email = scanner.nextLine();
+            System.out.print("주소: ");
+            address = scanner.nextLine();
 
-        System.out.print("비밀번호: ");
-        password = scanner.nextLine();
+            Students student = new Students(
+                    0, studentName, password,
+                    sqlDate,
+                    convertGender(gender),
+                    phone, address, email,
+                    false, null, null, null);
 
-        System.out.print("주소: ");
-        address = scanner.nextLine();
-
-        Students student = new Students(
-                0, studentName, password,
-                Date.valueOf(birthDate),
-                convertGender(gender),
-                phone, address, email,
-                false, null, null, null);
-
-        try {
             Boolean success = studentService.registerStudent(student);
 
             if(success) {
@@ -205,6 +207,10 @@ public class StudentView {
             System.out.println("학생 등록 중 오류가 발생했습니다.");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+        } catch (InvalidDateException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println("존재하지 않는 날짜이거나 날짜 변환 도중 문제가 발생했습니다!");
         }
     }
 

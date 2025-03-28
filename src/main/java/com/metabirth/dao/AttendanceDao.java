@@ -4,12 +4,8 @@ import com.metabirth.model.Attendances;
 import com.metabirth.util.PropertiesUtil;
 import com.metabirth.util.QueryUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 public class AttendanceDao {
@@ -162,5 +158,32 @@ public class AttendanceDao {
         }
 
         return Attendances;
+    }
+
+    public Boolean addAttendance(Attendances attendance) {
+        String query = QueryUtil.getQuery("addAttendance");
+
+        try (PreparedStatement psmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
+            psmt.setInt(1, attendance.getStudentId());
+            psmt.setByte(2, attendance.getAttendanceStatus());
+            if(attendance.getCheckinTime() != null)
+                psmt.setTimestamp(3, Timestamp.valueOf(attendance.getCheckinTime()));
+            else
+                psmt.setNull(3, java.sql.Types.TIMESTAMP);
+            if(attendance.getCheckoutTime() != null)
+                psmt.setTimestamp(4, Timestamp.valueOf(attendance.getCheckoutTime()));
+            else
+                psmt.setNull(4, java.sql.Types.TIMESTAMP);
+            psmt.setDate(5, attendance.getAttendanceDate());
+            psmt.setBoolean(6, attendance.isStatus());
+
+            int affectedRows = psmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            System.out.println("학생 추가 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        return false;
     }
 }

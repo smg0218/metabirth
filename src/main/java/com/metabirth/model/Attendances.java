@@ -3,7 +3,7 @@ package com.metabirth.model;
 import com.metabirth.util.TimeUtil;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 public class Attendances {
@@ -49,7 +49,7 @@ public class Attendances {
         this.studentId = studentId;
     }
 
-    public byte isAttendanceStatus() {
+    public byte getAttendanceStatus() {
         return attendanceStatus;
     }
 
@@ -123,7 +123,7 @@ public class Attendances {
                 ", 체크아웃시간: " + (checkoutTime != null ? TimeUtil.formatDateTimeToString(checkoutTime) : null) +
                 ", 출석날짜: " + attendanceDate +
                 ", 삭제여부: " + status +
-                ", 생성일: " + createdAt +
+                ", 생성일: " + TimeUtil.formatDateTimeToString(createdAt) +
                 ", 수정일: " + (updatedAt != null ? TimeUtil.formatDateTimeToString(updatedAt) : null) +
                 ", 삭제일: " + (deletedAt != null ? TimeUtil.formatDateTimeToString(deletedAt) : null) +
                 '}';

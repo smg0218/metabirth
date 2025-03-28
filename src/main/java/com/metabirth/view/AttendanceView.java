@@ -2,12 +2,15 @@ package com.metabirth.view;
 
 import com.metabirth.exception.InvalidDateException;
 import com.metabirth.model.Attendances;
+import com.metabirth.model.Students;
 import com.metabirth.service.AttendanceService;
 import com.metabirth.util.TimeUtil;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -164,7 +167,69 @@ public class AttendanceView {
      * - 출석 기록 추가
      */
     private void addAttendance() {
+        String checkinTime, checkoutTime = null, attendanceDate = null;
+        int studentId;
+        byte attendanceStatus;
+        LocalDateTime checkinDateTime = null, checkoutDateTime = null;
+        Date attendanceSqlDate = null;
 
+        try {
+            System.out.print("학생 Id: ");
+            studentId = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("체크인 시간(yyyy-mm-dd hh:mm:ss)[엔터 시 null값]: ");
+            checkinTime = scanner.nextLine();
+
+            if(!checkinTime.isEmpty())
+                checkinDateTime = TimeUtil.formatStringToDateTime(checkinTime);
+
+            System.out.print("체크아웃 시간(yyyy-mm-dd hh:mm:ss)[엔터 시 null값]: ");
+            checkoutTime = scanner.nextLine();
+
+            if(!checkoutTime.isEmpty())
+                checkoutDateTime = TimeUtil.formatStringToDateTime(checkoutTime);
+
+            System.out.print("출석일(yyyy-mm-dd): ");
+            attendanceDate = scanner.nextLine();
+
+            attendanceSqlDate = TimeUtil.formatStringDateToSqlDate(attendanceDate);
+
+            while(true) {
+                System.out.print("출석상태(0: 관리자가 직접 데이터를 넣음, 1: 체크인 완료, 2: 체크아웃 완료, 3: 체크인, 체크아웃 완료): ");
+                attendanceStatus = scanner.nextByte();
+                scanner.nextLine();
+
+                if(attendanceStatus == 0 || attendanceStatus == 1 ||
+                attendanceStatus == 2 || attendanceStatus == 3) {
+                    break;
+                } else {
+                    System.out.println("0,1,2,3 중에서 입력해주세요!");
+                }
+
+                break;
+            }
+
+            Attendances attendance = new Attendances(0, studentId, attendanceStatus,
+                    checkinDateTime, checkoutDateTime, attendanceSqlDate,
+                    false, null, null, null);
+
+            Boolean success = attendanceService.addAttendance(attendance);
+
+            if(success) {
+                System.out.println("출석 성공적으로 추가되었습니다.");
+            } else {
+                System.out.println("출석 등록에 실패했습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("출석 등록 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (InvalidDateException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println("존재하지 않는 날짜이거나 날짜 변환 도중 문제가 발생했습니다!");
+        }
     }
 
     /**

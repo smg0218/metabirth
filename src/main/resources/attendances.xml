@@ -10,41 +10,33 @@
         SELECT
         *
         FROM attendances
-        where checkin_time is not null
+        where checkin_time is not null AND status = 0
     </query>
 
     <query id="getCheckOutAllAttendances">
         SELECT
         *
         FROM attendances
-        where checkout_time is not null
+        where checkout_time is not null AND status = 0
     </query>
 
     <query id="getDateAttendances">
         SELECT
         *
         FROM attendances
-        where attendance_date = ?
+        where attendance_date = ? AND status = 0
     </query>
 
     <query id="getStudentAttendance">
         SELECT
         *
         FROM attendances
-        WHERE student_id = ?
+        WHERE student_id = ? AND status = 0
     </query>
 
-    <query id="getDeleteStudents">
-        SELECT
-        *
-        FROM students
-        WHERE status = 1
-    </query>
-
-
-    <query id="addStudent">
-        INSERT INTO users (username, email, password_hash, role_id, created_at)
-        VALUES (?, ?, ?, ?, now())
+    <query id="addAttendance">
+        INSERT INTO attendances (student_id, attendance_status, checkin_time, checkout_time, attendance_date, status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, now())
     </query>
 
     <query id="updateStudent">
