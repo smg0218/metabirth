@@ -14,7 +14,7 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\n===== LMS 관리 시스템 =====");
+            System.out.println("\n===== 메타벌스 아카데미 관리 시스템 =====");
             System.out.println("1. 학생(Students) 관리");
             System.out.println("2. 출석(Attendances) 관리");
             System.out.println("0. 종료");
@@ -26,6 +26,7 @@ public class Application {
             switch (choice) {
                 case 1 -> startStudentManagement(connection);
                 case 2 -> startAttendancesManagement(connection);
+                case 9 -> JDBCConnection.printConnectionPoolStatus();
                 case 0 -> {
                     connection.close();
                     System.out.println("프로그램을 종료합니다.");
@@ -36,13 +37,21 @@ public class Application {
         }
     }
 
-    private static void startAttendancesManagement(Connection connection) {
-        AttendanceView attendanceView = new AttendanceView(connection);
-        attendanceView.showMenu();
-    }
-
+    /**
+     * 학생 관리 프로그램
+     * @param connection : DB가 연결된 connection
+     */
     private static void startStudentManagement(Connection connection) {
         StudentView studentView = new StudentView(connection);
         studentView.showMenu();
+    }
+
+    /**
+     * 출석 관리 프로그램
+     * @param connection : DB가 연결된 connection
+     */
+    private static void startAttendancesManagement(Connection connection) {
+        AttendanceView attendanceView = new AttendanceView(connection);
+        attendanceView.showMenu();
     }
 }

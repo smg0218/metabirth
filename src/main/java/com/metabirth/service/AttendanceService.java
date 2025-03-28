@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.sql.Date;
 import java.util.List;
 
 public class AttendanceService {
@@ -43,6 +45,28 @@ public class AttendanceService {
 
     public List<Attendances> getCheckOutAllAttendances() throws SQLException {
         List<Attendances> attendance = attendanceDao.getCheckOutAllAttendances();
+
+        if(attendance == null) {
+            log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
+            return null;
+        }
+
+        return attendance;
+    }
+
+    public List<Attendances> getDateAttendances(Date date) throws SQLException, ParseException {
+        List<Attendances> attendance = attendanceDao.getDateAttendances(date);
+
+        if(attendance == null) {
+            log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");
+            return null;
+        }
+
+        return attendance;
+    }
+
+    public List<Attendances> getStudentAttendance(int studentId) throws SQLException {
+        List<Attendances> attendance = attendanceDao.getStudentAttendance(studentId);
 
         if(attendance == null) {
             log.error("조회한 사용자의 정보가 없거나 DB와 연결하는 과정에서 오류가 발생했습니다.");

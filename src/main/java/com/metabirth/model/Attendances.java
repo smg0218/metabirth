@@ -119,13 +119,13 @@ public class Attendances {
                 "출석Id: " + attendanceId +
                 ", 학생Id: " + studentId +
                 ", 출석상태: " + convertAttendanceStatus(attendanceStatus) +
-                ", 체크인시간: " + (checkinTime != null ? TimeUtil.formatLocalDateTime(checkinTime) : null) +
-                ", 체크아웃시간: " + (checkoutTime != null ? TimeUtil.formatLocalDateTime(checkoutTime) : null) +
+                ", 체크인시간: " + (checkinTime != null ? TimeUtil.formatDateTimeToString(checkinTime) : null) +
+                ", 체크아웃시간: " + (checkoutTime != null ? TimeUtil.formatDateTimeToString(checkoutTime) : null) +
                 ", 출석날짜: " + attendanceDate +
                 ", 삭제여부: " + status +
                 ", 생성일: " + createdAt +
-                ", 수정일: " + (updatedAt != null ? TimeUtil.formatLocalDateTime(updatedAt) : null) +
-                ", 삭제일: " + (deletedAt != null ? TimeUtil.formatLocalDateTime(deletedAt) : null) +
+                ", 수정일: " + (updatedAt != null ? TimeUtil.formatDateTimeToString(updatedAt) : null) +
+                ", 삭제일: " + (deletedAt != null ? TimeUtil.formatDateTimeToString(deletedAt) : null) +
                 '}';
     }
 

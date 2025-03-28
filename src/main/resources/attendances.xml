@@ -20,6 +20,20 @@
         where checkout_time is not null
     </query>
 
+    <query id="getDateAttendances">
+        SELECT
+        *
+        FROM attendances
+        where attendance_date = ?
+    </query>
+
+    <query id="getStudentAttendance">
+        SELECT
+        *
+        FROM attendances
+        WHERE student_id = ?
+    </query>
+
     <query id="getDeleteStudents">
         SELECT
         *
@@ -27,12 +41,6 @@
         WHERE status = 1
     </query>
 
-    <query id="getStudentById">
-        SELECT
-        *
-        FROM users
-        WHERE user_id = ?
-    </query>
 
     <query id="addStudent">
         INSERT INTO users (username, email, password_hash, role_id, created_at)

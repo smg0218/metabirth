@@ -1,10 +1,13 @@
 package com.metabirth.view;
 
+import com.metabirth.exception.InvalidDateException;
 import com.metabirth.model.Attendances;
 import com.metabirth.service.AttendanceService;
+import com.metabirth.util.TimeUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,7 +42,7 @@ public class AttendanceView {
                 case 2 -> getCheckInAllAttendances();
                 case 3 -> getCheckOutAllAttendances();
                 case 4 -> getDateAttendances();
-                case 5 -> getAttendanceForStudent();
+                case 5 -> getStudentAttendance();
                 case 6 -> addAttendance();
                 case 7 -> updateAttendance();
                 case 8 -> deleteAttendance();
@@ -114,15 +117,46 @@ public class AttendanceView {
      * - 특정 날짜의 출석 기록 조회
      */
     private void getDateAttendances() {
+        try {
+            System.out.print("조회할 날짜를 입력하세요(yyyy-mm-dd): ");
+            String date = scanner.nextLine();
+            List<Attendances> attendances = attendanceService.getDateAttendances(TimeUtil.formatStringDateToSqlDate(date));
 
+            if (attendances.isEmpty()) {
+                System.out.println("등록된 출석 정보가 없습니다.");
+            } else {
+                System.out.println("\n===== 전체 출석 목록 =====");
+                attendances.forEach(student -> System.out.println(student));
+            }
+        } catch (SQLException e) {
+            System.out.println("출석 목록을 조회하는 중 오류가 발생했습니다.");
+        } catch (InvalidDateException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println("존재하지 않는 날짜이거나 날짜 변환 도중 문제가 발생했습니다!");
+        }
     }
 
     /**
      * 특정 학생 출석 조회(Read)
      * - 특정 학생의 학생 ID로 출석 기록 조회
      */
-    private void getAttendanceForStudent() {
+    private void getStudentAttendance() {
+        try {
+            System.out.print("조회할 학생 ID를 입력하세요: ");
+            int studentId = scanner.nextInt();
+            scanner.nextLine();
+            List<Attendances> attendances = attendanceService.getStudentAttendance(studentId);
 
+            if (attendances.isEmpty()) {
+                System.out.println("등록된 출석 정보가 없습니다.");
+            } else {
+                System.out.println("\n===== 전체 출석 목록 =====");
+                attendances.forEach(student -> System.out.println(student));
+            }
+        } catch (SQLException e) {
+            System.out.println("출석 목록을 조회하는 중 오류가 발생했습니다.");
+        }
     }
 
     /**

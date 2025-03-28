@@ -158,9 +158,9 @@ public class Students {
                 ", 주소: '" + address + '\'' +
                 ", 이메일: '" + email + '\'' +
                 ", 삭제여부: " + status +
-                ", 생성일: " + TimeUtil.formatLocalDateTime(createdAt) +
-                ", 수정일: " + (updatedAt != null ? TimeUtil.formatLocalDateTime(updatedAt) : null) +
-                ", 삭제일: " + (deletedAt != null ? TimeUtil.formatLocalDateTime(deletedAt) : null) +
+                ", 생성일: " + TimeUtil.formatDateTimeToString(createdAt) +
+                ", 수정일: " + (updatedAt != null ? TimeUtil.formatDateTimeToString(updatedAt) : null) +
+                ", 삭제일: " + (deletedAt != null ? TimeUtil.formatDateTimeToString(deletedAt) : null) +
                 '}';
     }
 
