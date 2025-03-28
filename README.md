@@ -4,7 +4,7 @@ DB명 : API_GOGO
 ID : gorilla  
 password : gorilla  
 ## ERD
-![ERD](https://github.com/smg0218/metabirth/blob/master/KakaoTalk_20250325_232038464.png)
+![ERD](https://raw.githubusercontent.com/smg0218/metabirth/refs/heads/master/KakaoTalk_20250325_232038464.png)
 
 ## 담당부분
 ### 1. 학생
