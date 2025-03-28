@@ -20,7 +20,7 @@ public class QueryUtil {
 
     /**
      * XML 파일에서 쿼리를 읽어오는 메서드
-     * @param xmlFileName : 읽어올 xml 파일 명(확장자 포함)
+     * @param xmlFileName 읽어올 xml 파일 명(확장자 포함)
      */
     public static void loadQueries(String xmlFileName) {
         try {

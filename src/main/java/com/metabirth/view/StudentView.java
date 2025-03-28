@@ -3,12 +3,14 @@ package com.metabirth.view;
 import com.metabirth.exception.InvalidDateException;
 import com.metabirth.model.Students;
 import com.metabirth.service.StudentService;
+import com.metabirth.util.PatternUtil;
 import com.metabirth.util.TimeUtil;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -112,14 +114,14 @@ public class StudentView {
      */
     private void getStudentById() {
         while (true) {
-            System.out.println("1. 학생 ID로 조회");
-            System.out.println("2. 학생 Email로 조회");
-            System.out.println("0. 뒤로가기");
-            System.out.print("선택하세요: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-            Students student = null;
             try {
+                Students student = null;
+                System.out.println("1. 학생 ID로 조회");
+                System.out.println("2. 학생 Email로 조회");
+                System.out.println("0. 뒤로가기");
+                System.out.print("선택하세요: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
                 switch (choice) {
                     case 1 -> {
                         System.out.print("조회할 학생 ID를 입력하세요: ");
@@ -135,10 +137,13 @@ public class StudentView {
                     case 0 -> {
                         return;
                     }
-                    default -> System.out.println("잘못된 입력입니다. 다시 선택하세요.");
+                    default -> {
+                        System.out.println("잘못된 입력입니다. 다시 선택하세요.");
+                        continue;
+                    }
                 }
-                System.out.println("\n===== 학생 정보 =====");
-                System.out.println(student);
+            System.out.println("\n===== 학생 정보 =====");
+            System.out.println(student);
             } catch (SQLException e) {
                 System.out.println("학생 조회 중 오류가 발생했습니다.");
             } catch (IllegalArgumentException e) {
@@ -176,7 +181,10 @@ public class StudentView {
                 System.out.print("전화번호(010-xxxx-xxxx): ");
                 phone = scanner.nextLine();
 
-                break;
+                if(PatternUtil.checkPhonePattern(phone))
+                    break;
+                else
+                    System.out.println("전화번호는 [010-xxxx-xxxx]와 같은 형태로 입력해야 합니다!");
             }
 
             System.out.print("이메일: ");
@@ -260,7 +268,7 @@ public class StudentView {
                     System.out.print("새로운 생년월일(yyyy-mm-dd)[엔터 시 기존 생년월일 유지]: ");
                     String birthDate = scanner.nextLine();
                     if(!birthDate.isEmpty())
-                        updateStudent.setBirthDate(Date.valueOf(birthDate));
+                        updateStudent.setBirthDate(TimeUtil.formatStringDateToSqlDate(birthDate));
 
                     break;
                 }
@@ -281,10 +289,14 @@ public class StudentView {
                 while(true) {
                     System.out.print("새로운 전화번호(010-xxxx-xxxx)[엔터 시 기존 전화번호 유지]: ");
                     String phone = scanner.nextLine();
+
+                    if(!phone.isEmpty() || !PatternUtil.checkPhonePattern(phone))
+                        System.out.println("전화번호는 [010-xxxx-xxxx]와 같은 형태로 입력해야 합니다!");
+
                     if(!phone.isEmpty())
                         updateStudent.setPhone(phone);
-
-                    break;
+                    else
+                        break;
                 }
 
                 System.out.print("새로운 이메일[엔터 시 기존 이메일 유지]: ");
@@ -317,6 +329,8 @@ public class StudentView {
                 System.out.println("사용자 정보 수정 중 오류가 발생했습니다.");
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+            } catch (ParseException e) {
+                System.out.println("존재하지 않는 날짜이거나 날짜 변환 도중 문제가 발생했습니다!");
             }
         }
     }

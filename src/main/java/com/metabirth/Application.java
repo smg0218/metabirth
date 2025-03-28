@@ -39,7 +39,7 @@ public class Application {
 
     /**
      * 학생 관리 프로그램
-     * @param connection : DB가 연결된 connection
+     * @param connection DB가 연결된 connection
      */
     private static void startStudentManagement(Connection connection) {
         StudentView studentView = new StudentView(connection);
@@ -48,7 +48,7 @@ public class Application {
 
     /**
      * 출석 관리 프로그램
-     * @param connection : DB가 연결된 connection
+     * @param connection DB가 연결된 connection
      */
     private static void startAttendancesManagement(Connection connection) {
         AttendanceView attendanceView = new AttendanceView(connection);
