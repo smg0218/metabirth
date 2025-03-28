@@ -1,6 +1,6 @@
 ## 메타벌스 프로젝트
 ### 기본설정
-DB명 : API-GOGO  
+DB명 : API_GOGO  
 ID : gorilla  
 password : gorilla  
 ## ERD
