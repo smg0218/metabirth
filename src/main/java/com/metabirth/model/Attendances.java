@@ -165,13 +165,13 @@ public class Attendances {
                 return "관리자가 직접 데이터를 넣음";
             }
             case 1 -> {
-                return "체크인 완료";
+                return "출석";
             }
             case 2 -> {
-                return "체크아웃 완료";
+                return "지각";
             }
             case 3 -> {
-                return "체크인, 체크아웃 완료";
+                return "결석";
             }
             default -> {
                 return "잘못된 값이 입력된 상태, 확인 필요!!!";

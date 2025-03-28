@@ -195,7 +195,7 @@ public class AttendanceView {
             attendanceSqlDate = TimeUtil.formatStringDateToSqlDate(attendanceDate);
 
             while(true) {
-                System.out.print("출석상태(0: 관리자가 직접 데이터를 넣음, 1: 체크인 완료, 2: 체크아웃 완료, 3: 체크인, 체크아웃 완료): ");
+                System.out.print("출석상태(0: 관리자가 직접 데이터를 넣음, 1: 출석, 2: 지각, 3: 결석): ");
                 attendanceStatus = scanner.nextByte();
                 scanner.nextLine();
 
@@ -264,7 +264,7 @@ public class AttendanceView {
                 updateAttendance.setAttendanceDate(TimeUtil.formatStringDateToSqlDate(attendanceDate));
 
             while(true) {
-                System.out.print("출석상태 변경(0: 관리자가 직접 데이터를 넣음, 1: 체크인 완료, 2: 체크아웃 완료, 3: 체크인, 체크아웃 완료): ");
+                System.out.print("출석상태 변경(0: 관리자가 직접 데이터를 넣음, 1: 출석, 2: 지각, 3: 결석): ");
                 attendanceStatus = scanner.nextByte();
                 scanner.nextLine();
 
