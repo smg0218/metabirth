@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -129,6 +130,13 @@ class StudentDaoTest {
     }
 
     @Test
+    @DisplayName("활성화된 학생 조회 테스트")
+    void getAllActiveStudents() {
+        List<Students> activeStudents = studentDao.getActiveStudents();
+        Assertions.assertNotNull(activeStudents, "활성화된 학생이 있어야 합니다!");
+    }
+
+    @Test
     @DisplayName("학생 삭제(수정) 테스트")
     void deleteUpdateStudent() {
         studentDao.deleteStudent(studentId);
@@ -136,6 +144,16 @@ class StudentDaoTest {
         Students students = studentDao.getStudentById(studentId);
 
         Assertions.assertTrue(students.isStatus(), "테스트 데이터의 삭제 상태가 True여야 합니다.");
+    }
+
+    @Test
+    @DisplayName("삭제된 학생 조회 테스트")
+    void getAllDeleteStudentTest() {
+        Students student = studentDao.getStudentById(studentId);
+        studentDao.deleteStudent(studentId);
+
+        List<Students> deleteStudents = studentDao.getDeleteStudents();
+        Assertions.assertFalse(deleteStudents.isEmpty(), "삭제된 학생이 한명이상 있어야 합니다!");
     }
 
     @AfterEach
