@@ -8,8 +8,10 @@ password : gorilla
 
 ## 담당부분
 ### 1. 학생
-### 2. 출석
+![Student](https://raw.githubusercontent.com/smg0218/metabirth/refs/heads/master/picture/erd/student.png)
 
+### 2. 출석
+![Attendence](https://raw.githubusercontent.com/smg0218/metabirth/refs/heads/master/picture/erd/attendance.png)
 ## 시퀀스 다이아그램
 
 ### 1. 학생
