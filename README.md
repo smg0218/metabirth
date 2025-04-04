@@ -28,14 +28,14 @@ password : gorilla
 ![DeleteStudent](https://raw.githubusercontent.com/smg0218/metabirth/refs/heads/master/src/main/resources/picture/sequence/student4.png)
 
 ### 2. 출석
-#### 1.1. 출석 추가
+#### 2.1. 출석 추가
 ![AddAttendance](https://raw.githubusercontent.com/smg0218/metabirth/refs/heads/master/src/main/resources/picture/sequence/attendance1.png)
 
-#### 1.2. 출석 전체 조회
+#### 2.2. 출석 전체 조회
 ![SelectAttendance](https://raw.githubusercontent.com/smg0218/metabirth/refs/heads/master/src/main/resources/picture/sequence/attendance2.png)
 
-#### 1.3. 출석 정보 수정
+#### 2.3. 출석 정보 수정
 ![UpdateAttendance](https://raw.githubusercontent.com/smg0218/metabirth/refs/heads/master/src/main/resources/picture/sequence/attendance3.png)
 
-#### 1.4. 출석 제거
+#### 2.4. 출석 제거
 ![DeleteAttendance](https://raw.githubusercontent.com/smg0218/metabirth/refs/heads/master/src/main/resources/picture/sequence/attendance4.png)
