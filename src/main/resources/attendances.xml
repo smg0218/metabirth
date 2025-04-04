@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--출석 관련 SQL-->
 <queries>
     <query id="getAllAttendances">
         SELECT

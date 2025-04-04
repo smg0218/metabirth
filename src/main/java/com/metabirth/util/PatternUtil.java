@@ -1,7 +1,5 @@
 package com.metabirth.util;
 
-import com.metabirth.exception.InvalidDateException;
-
 import java.util.regex.Pattern;
 
 /**

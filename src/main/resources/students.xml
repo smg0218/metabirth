@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--학생 관련 SQL-->
 <queries>
     <query id="getAllStudents">
         SELECT
