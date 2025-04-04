@@ -4,6 +4,9 @@ import com.metabirth.config.JDBCConnection;
 
 import java.util.Properties;
 
+/**
+ * properties와 관련된 Util
+ */
 public class PropertiesUtil {
     public static final Properties properties = new Properties();
 

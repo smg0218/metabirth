@@ -4,6 +4,9 @@ import com.metabirth.exception.InvalidDateException;
 
 import java.util.regex.Pattern;
 
+/**
+ * input 값이 패턴에 맞는지 확인하는 Util
+ */
 public class PatternUtil {
     private static final String PHONE_PATTERN = "010-\\d{4}-\\d{4}";
     private static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
