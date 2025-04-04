@@ -241,6 +241,10 @@ public class AttendanceView {
             int attendanceId = scanner.nextInt();
             scanner.nextLine();
             Attendances attendance = attendanceService.getAttendanceById(attendanceId);
+            if(attendance == null) {
+                System.out.println("조회된 출석이 없습니다.");
+                return;
+            }
             Attendances updateAttendance = new Attendances(attendance);
 
             byte attendanceStatus;

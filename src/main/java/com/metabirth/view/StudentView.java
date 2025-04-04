@@ -142,6 +142,10 @@ public class StudentView {
                         continue;
                     }
                 }
+                if (student == null) {
+                    System.out.println("조회된 학생이 없습니다.");
+                    return;
+                }
             System.out.println("\n===== 학생 정보 =====");
             System.out.println(student);
             } catch (SQLException e) {
@@ -256,6 +260,10 @@ public class StudentView {
                         System.out.println("잘못된 입력입니다. 다시 선택하세요.");
                         continue;
                     }
+                }
+                if (student == null) {
+                    System.out.println("해당 학생이 없습니다.");
+                    return;
                 }
                 Students updateStudent = new Students(student);
 
