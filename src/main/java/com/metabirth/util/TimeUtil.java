@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 public class TimeUtil {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    private static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
     static {
         DATE_FORMAT.setLenient(false); // 실제로 존재하는 날짜인지 확인
     }
@@ -39,14 +38,14 @@ public class TimeUtil {
     /**
      * yyyy-MM-dd 형태의 String 데이터를 sql.Date 타입으로 변환하는 메서드
      * setLenient(false) 상태이기 때문에 실제로 존재하지 않는 데이터는 ParseException이 발생
-     * @param date yyyy-MM-dd 형태의 String 데이터
+     * @param date String 타입의 데이터
      * @return sql.Date 타입으로 변환된 yyyy-MM-dd
      * @throws InvalidDateException 변환 도중 확인된 문제 발생
      * @throws ParseException 변환 실패
      */
     public static Date formatStringDateToSqlDate(String date) throws ParseException {
         // 입력받은 데이터 형식이 [yyyy-MM-dd] 형태인지 확인
-        if (!Pattern.matches(DATE_PATTERN, date)) {
+        if (!PatternUtil.checkDatePattern(date)) {
             throw new InvalidDateException("날짜 형식은 [yyyy-mm-dd]와 같아야 합니다! \n예)2025-01-01");
         }
 
